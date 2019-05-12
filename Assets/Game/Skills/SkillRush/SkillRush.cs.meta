@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 6419c30eaf4bb294a8ee909732facc4d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - config: {fileID: 11400000, guid: 2b9ac74b4f3d30f4295d14fe64206262, type: 2}
+  - stickEffect: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

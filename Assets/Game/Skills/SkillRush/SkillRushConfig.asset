@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a9287dbe6d5244b8aa58c9563d7d34, type: 3}
+  m_Name: SkillRushConfig
+  m_EditorClassIdentifier: 
+  range: 8
+  speed: 18
+  lifeTime: 0.6666667
+  accRate: 0.33333334
+  stopTime: -13.442431
+  magicConsumePerUse: 20
+  magicRequired: 5
+  stickTimeLimit: 0.1
+  stickMagicConsumePerSec: 0
+  stickEffectTemplate: {fileID: 2259550798466919961, guid: d0bd64993f47b1243921f5276e73bfc3,
+    type: 3}
+  activeColor: {r: 1, g: 0.9502027, b: 0.10849059, a: 1}

@@ -90,6 +90,16 @@ public struct SkillSpec : IEquatable<SkillSpec>
     public static bool operator==(SkillSpec x, SkillSpec y) => x.Equals(y);
     public static bool operator!=(SkillSpec x, SkillSpec y) => !x.Equals(y);
     
+    public bool SameSkill(SkillSpec x)
+    {
+        int a = 0, b = 0;
+        for(int i=0; i<maxCount; i++) if(this[i] == StoneType.Spirit) a++;
+        for(int i=0; i<maxCount; i++) if(this[i] == StoneType.Power) b++;
+        for(int i=0; i<maxCount; i++) if(x[i] == StoneType.Spirit) a--;
+        for(int i=0; i<maxCount; i++) if(x[i] == StoneType.Power) b--;
+        return a == 0 && b == 0;
+    }
+    
     public override string ToString()
         => "[" + a.ToString() + ","
         + b.ToString() + ","
@@ -108,6 +118,7 @@ public class SkillTable : ScriptableObject
     {
         public string name;
         public SkillSpec spec;
+        public Sprite sprite;
         public SkillConfig config;
     }
     
@@ -117,7 +128,7 @@ public class SkillTable : ScriptableObject
     {
         get
         {
-            foreach(var i in data) if(i.spec == x) return i;
+            foreach(var i in data) if(i.spec.SameSkill(x)) return i;
             return null;
         }
     }
@@ -131,9 +142,9 @@ public class SkillTable : ScriptableObject
         }
     }
     
-    public Skill BuildFromSpec(SkillSpec spec, PlayerState x)
+    public Skill BuildFromSpec(SkillSpec spec, Protagonist x)
     {
-        foreach(var i in data) if(i.spec == spec) return i.config.Build(x);
+        foreach(var i in data) if(i.spec.SameSkill(spec)) return i.config.Build(x, spec);
         return null;
     }
 }

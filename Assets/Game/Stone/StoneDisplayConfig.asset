@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff03e437a59b9aa4381f77c0e26d9ebe, type: 3}
-  m_Name: SlotDisplayConfig
+  m_Name: StoneDisplayConfig
   m_EditorClassIdentifier: 
   sprites:
   - type: 0
     sprite: {fileID: 21300000, guid: 13118865c23770941baa82546c5cf80f, type: 3}
-    color: {r: 0.5377358, g: 0.3923742, b: 0.027901389, a: 1}
+    color: {r: 0.9896868, g: 1, b: 0.8632076, a: 1}
   - type: 1
     sprite: {fileID: 21300000, guid: c109945503ce86544884d718de4c00ce, type: 3}
-    color: {r: 1, g: 1, b: 1, a: 1}
+    color: {r: 0.9974322, g: 0.995283, b: 1, a: 1}
   - type: 2
     sprite: {fileID: 21300000, guid: c109945503ce86544884d718de4c00ce, type: 3}
-    color: {r: 0.5723877, g: 0.35635456, b: 0.9811321, a: 1}
+    color: {r: 0.43004927, g: 0.3063813, b: 0.8018868, a: 1}
   - type: 4
     sprite: {fileID: 21300000, guid: c109945503ce86544884d718de4c00ce, type: 3}
-    color: {r: 0.5592071, g: 0.8396226, b: 0.48713955, a: 1}
+    color: {r: 0.7095791, g: 0.9150943, b: 0.40143287, a: 1}
   - type: 8
     sprite: {fileID: 21300000, guid: c109945503ce86544884d718de4c00ce, type: 3}
-    color: {r: 0.9622642, g: 0.8974072, b: 0.38581347, a: 1}
+    color: {r: 0.8867924, g: 0.86351424, b: 0.34718758, a: 1}

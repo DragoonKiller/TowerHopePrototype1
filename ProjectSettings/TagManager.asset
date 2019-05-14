@@ -36,8 +36,14 @@ TagManager:
   - 
   - Player
   - 
-  - 
+  - EditorOnly
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 2135676567
+    locked: 0
+  - name: EditorOnly
+    uniqueID: 1499671709
     locked: 0

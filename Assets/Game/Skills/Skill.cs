@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerState))]
+[RequireComponent(typeof(Protagonist))]
 public abstract class Skill : MonoBehaviour
 {
-    protected PlayerState player => this.GetComponent<PlayerState>();
+    protected Protagonist player => this.GetComponent<Protagonist>();
     protected Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
 }

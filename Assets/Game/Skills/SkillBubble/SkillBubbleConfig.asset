@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: SkillBubbleConfig
   m_EditorClassIdentifier: 
   range: 0
+  magicRequired: 12
   bubbleSource: {fileID: 7973043502554926232, guid: 9aca5765973daff48a6211f66f15f0e4,
     type: 3}
   speed: 0.4
   accPerPhysicsFrame: 0.3
-  magicConsumePerSec: 2
-  magicRequired: 5
+  magicConsumePerSec: 24
   collisionSpeed: 8

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a9287dbe6d5244b8aa58c9563d7d34, type: 3}
   m_Name: SkillRushConfig
   m_EditorClassIdentifier: 
-  range: 8
+  range: 6.7
+  magicRequired: 40
   speed: 18
   lifeTime: 0.6666667
   accRate: 0.33333334
-  stopTime: -13.442431
-  magicConsumePerUse: 20
-  magicRequired: 5
+  stopTime: 0.25
+  magicConsumePerUse: 120
   stickTimeLimit: 0.1
-  stickMagicConsumePerSec: 0
+  stickMagicConsumePerSec: 4
   stickEffectTemplate: {fileID: 2259550798466919961, guid: d0bd64993f47b1243921f5276e73bfc3,
     type: 3}
   activeColor: {r: 1, g: 0.9502027, b: 0.10849059, a: 1}

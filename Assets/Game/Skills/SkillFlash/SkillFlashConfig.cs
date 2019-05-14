@@ -15,5 +15,5 @@ public class SkillFlashConfig : SkillConfig
     public GameObject destinationAbsorb;
     public float renderScales;
     
-    public override Skill Build(PlayerState x) => UseSkill<SkillFlash>(x, (s) => { s.config = this; });
+    public override Skill Build(Protagonist x, SkillSpec spec) => UseSkill<SkillFlash>(x, (s) => { s.config = this; });
 }

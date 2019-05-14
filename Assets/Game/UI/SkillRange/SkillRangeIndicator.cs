@@ -4,9 +4,9 @@ using UnityEngine;
 /// Control skills' indicator, including range, etc.
 [ExecuteAlways]
 [RequireComponent(typeof(SpriteRenderer))]
-public class SkillIndicator : MonoBehaviour
+public class SkillRangeIndicator : MonoBehaviour
 {
-    public PlayerState player;
+    public Protagonist player;
     public SkillTable skills;
     
     public float displayBegin;
@@ -32,7 +32,7 @@ public class SkillIndicator : MonoBehaviour
             default : break;
         }
         
-        if(radius.LEZ() || player.curSkillState != null)
+        if(radius.LEZ())
         {
             rd.enabled = false;
             return;

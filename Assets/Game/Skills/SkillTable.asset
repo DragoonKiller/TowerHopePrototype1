@@ -20,6 +20,7 @@ MonoBehaviour:
       c: 0
       d: 0
       e: 0
+    sprite: {fileID: 21300000, guid: b7536637b17ed9e4c9211cb4f2ed236a, type: 3}
     config: {fileID: 11400000, guid: 2b9ac74b4f3d30f4295d14fe64206262, type: 2}
   - name: Bubble
     spec:
@@ -28,6 +29,7 @@ MonoBehaviour:
       c: 1
       d: 0
       e: 0
+    sprite: {fileID: 21300000, guid: e3f8fcde01c4c1d43a8f4e4d02a972db, type: 3}
     config: {fileID: 11400000, guid: 9ba1833a09c6a7940a5b7c3b383b4cec, type: 2}
   - name: Flash
     spec:
@@ -36,4 +38,5 @@ MonoBehaviour:
       c: 2
       d: 2
       e: 0
+    sprite: {fileID: 21300000, guid: d8b8db02f19b60c43b6defecd63880ab, type: 3}
     config: {fileID: 11400000, guid: 4c6897ebd1d99a443aaddb873e0ff4aa, type: 2}

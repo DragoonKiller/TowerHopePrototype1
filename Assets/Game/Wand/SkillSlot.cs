@@ -10,6 +10,10 @@ public class SkillSlot : MonoBehaviour
     // Multiple skill slots may use the same slot.
     public StoneSlot[] slots;
     
+    public int slotCount => slots.Length;
+    
+    public StoneSlot this[int k] => slots[k];
+    
     public int stoneCount
     {
         get
@@ -38,7 +42,7 @@ public class SkillSlot : MonoBehaviour
             if(stoneCount == 0) return 0f;
             
             float x = 1e6f;
-            foreach(var sl in slots) x.UpdMin(sl.magic);
+            foreach(var sl in slots) if(!sl.empty) x.UpdMin(sl.magic);
             return x;
         }
     }
@@ -51,7 +55,7 @@ public class SkillSlot : MonoBehaviour
             if(stoneCount == 0) return 0f;
             
             float x = 1e6f;
-            foreach(var sl in slots) x.UpdMin(sl.maxMagic);
+            foreach(var sl in slots) if(!sl.empty) x.UpdMin(sl.maxMagic);
             return x;
         }
     }

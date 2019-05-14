@@ -7,7 +7,7 @@ public class StoneSlot : MonoBehaviour
     public float magic
     {
         get => curMagic;
-        set => curMagic = stone == null ? 0 : value.Clamp(0f, stone.maxMagic);
+        set => curMagic = (stone == null ? 0 : value.Clamp(0f, stone.maxMagic));
     }
     
     public float maxMagic => stone == null ? 0 : stone.maxMagic;

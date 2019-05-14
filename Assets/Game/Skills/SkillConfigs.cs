@@ -9,9 +9,9 @@ public abstract class SkillConfig : ScriptableObject
     public float range;
     public float magicRequired;
     
-    public abstract Skill Build(PlayerState x);
+    public abstract Skill Build(Protagonist x, SkillSpec spec);
     
-    protected Skill UseSkill<T>(PlayerState player, Action<T> otherAction) where T : Skill
+    protected Skill UseSkill<T>(Protagonist player, Action<T> otherAction) where T : Skill
     {
         if(player.gameObject.GetComponent<T>() != null) return player.gameObject.GetComponent<T>();
         var skill = player.gameObject.AddComponent<T>();

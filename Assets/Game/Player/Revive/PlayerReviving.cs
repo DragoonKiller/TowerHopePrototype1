@@ -15,7 +15,7 @@ public class PlayerReviving : MonoBehaviour
         // Begin reviving instantly.
         var particleGen = this.GetComponentInChildren<DeathParticleGen>();
         particleGen.GenParticles();
-        GetComponent<PlayerController>().enabled = false;
+        this.GetComponent<Protagonist>().requireControl.Register(this);
     }
     
     void Update()
@@ -31,7 +31,7 @@ public class PlayerReviving : MonoBehaviour
     void OnDestroy()
     {
         this.transform.position = reviveBeacon.transform.position;
-        GetComponent<PlayerController>().enabled = true;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        this.GetComponent<Protagonist>().requireControl.Remove(this);
     }
 }

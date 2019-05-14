@@ -4,21 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// Controls the behaviour of a player.
-public class PlayerState : MonoBehaviour
+public class Protagonist : MonoBehaviour
 {
     public Inventory inventory;
     
+    public GameObject reviveBeacon;
+    
     public Skill curSkillState;
     
-    /// Set this to true of you want infinitely using skills.
-    public bool infiniteMagic;
-    
-    public float magic => infiniteMagic ? 1e6f : inventory.carryingWand.curSlot.magic;
-    public float maxMagic => inventory.carryingWand.curSlot.maxMagic;
-    
-    public float magicRecoverRate;
-    
-    public GameObject reviveBeacon;
+    // Is there any script that required the overall control of protagonist?
+    public Util.UniqueRegister<MonoBehaviour> requireControl = new Util.UniqueRegister<MonoBehaviour>();
     
     const int contactLimit = 20;
     ContactPoint2D[] recentContactsCache; 
@@ -87,6 +82,7 @@ public class PlayerState : MonoBehaviour
     /// The player object will not be removed but behaviours are limited.
     void DestroyPlayer()
     {
+        if(curSkillState != null) Destroy(curSkillState);
         var rev = this.gameObject.AddComponent<PlayerReviving>();
         rev.reviveBeacon = reviveBeacon;
     }
@@ -97,7 +93,7 @@ public class PlayerState : MonoBehaviour
     
     struct ContactList : IReadOnlyList<ContactPoint2D>
     {
-        public PlayerState player;
+        public Protagonist player;
         
         public int Count => player.contactCount;
         
@@ -116,7 +112,7 @@ public class PlayerState : MonoBehaviour
         
         struct Enumerator : IEnumerator<ContactPoint2D>
         {
-            public PlayerState player;
+            public Protagonist player;
             public int index;
             public ContactPoint2D Current => player.recentContactsCache[index];
             public void Reset() => index = -1;

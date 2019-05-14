@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SlotDisplayConfig", menuName = "ScriptableObjects/Slot Display Configs", order = 19)]
-public class WandDisplayConfig : ScriptableObject
+[CreateAssetMenu(fileName = "StoneDisplayConfig", menuName = "ScriptableObjects/Stone Display Configs", order = 19)]
+public class StoneDisplayConfig : ScriptableObject
 {
     [Serializable]
     public struct StoneSprite

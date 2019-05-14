@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
+/// This script is for displaying stones when configuraing your wand.
 [ExecuteAlways]
 public class StoneSlotDisplay : MonoBehaviour
 {
-    public WandDisplayConfig config;
+    public StoneDisplayConfig config;
     StoneSlot slot => this.GetComponent<StoneSlot>();
     SpriteRenderer rd => this.GetComponent<SpriteRenderer>();
     

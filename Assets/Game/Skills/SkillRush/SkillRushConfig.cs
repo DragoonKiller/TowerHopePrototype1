@@ -17,6 +17,12 @@ public class SkillRushConfig : SkillConfig
     
     public float magicConsumePerSec => magicConsumePerUse / lifeTime;  
     
-    public override Skill Build(PlayerState x) => UseSkill<SkillRush>(x, (s) => { s.config = this; });
-    
+    public override Skill Build(Protagonist x, SkillSpec spec)
+    {
+        var skill = UseSkill<SkillRush>(x, (s) =>
+        {
+            s.config = this;
+        });
+        return skill;
+    }
 }

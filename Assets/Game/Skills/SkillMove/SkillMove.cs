@@ -82,7 +82,7 @@ public class SkillMove : MonoBehaviour
     
     bool flying => !standing;
     
-    PlayerState player => this.GetComponent<PlayerState>();
+    Protagonist player => this.GetComponent<Protagonist>();
     Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
     
     void Start()

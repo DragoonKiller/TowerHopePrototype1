@@ -17,6 +17,8 @@ public class SkillRush : Skill
     public bool canBeStucked => lifeTime.GE(config.stickTimeLimit);
     
     float lifeTime;
+    float stopTime;
+    
     
     void Start()
     {
@@ -33,6 +35,9 @@ public class SkillRush : Skill
         player.sprite.color = config.activeColor;
         player.trail.startColor = config.activeColor.A(player.trail.startColor);
         player.trail.endColor = config.activeColor.A(player.trail.endColor);
+        
+        lifeTime = 0f;
+        stopTime = config.stopTime;
     }
     
     void Update()
@@ -40,10 +45,10 @@ public class SkillRush : Skill
         // If stuck, there'll be no more time limits for this skill.
         if(!stuck) lifeTime += Time.deltaTime;
         
-        config.stopTime -= Time.deltaTime;
+        stopTime -= Time.deltaTime;
         
         // Release left mouse button, stop the skill.
-        if((!Input.GetKey(KeyCode.Mouse0) && config.stopTime <= 0f) || lifeTime.GE(config.lifeTime))
+        if((!Input.GetKey(KeyCode.Mouse0) && stopTime <= 0f) || lifeTime.GE(config.lifeTime))
         {
             DestroyImmediate(this);
             return;
@@ -56,15 +61,15 @@ public class SkillRush : Skill
         // Do not allow magic recover when using this skill.
         if(!stuck)
         {
-            player.ConsumeMagic(Time.fixedDeltaTime * (config.magicConsumePerSec + player.magicRecoverRate));
+            player.ConsumeMagic(Time.fixedDeltaTime * config.magicConsumePerSec);
         }
         else
         {
-            player.ConsumeMagic(Time.fixedDeltaTime * (config.stickMagicConsumePerSec + player.magicRecoverRate));
+            player.ConsumeMagic(Time.fixedDeltaTime * config.stickMagicConsumePerSec);
         }
         
         
-        if(player.magic.LEZ())
+        if(player.inventory.carryingWand.curSlot.magic.LEZ())
         {
             DestroyImmediate(this);
             return;

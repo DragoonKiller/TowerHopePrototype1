@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fe36949d0fab24fafd6825cc2944a6, type: 3}
   m_Name: SkillFlashConfig
   m_EditorClassIdentifier: 
-  range: 8
-  hideTime: 0.5
+  range: 6
+  magicRequired: 100
+  hideTime: 0.33333334
   appearTime: 0.1
-  maxDist: 8
+  maxDist: 6
   swapDist: 2
   collisionPreventingDist: 0.1
-  magicConsumePerUse: 20
-  magicConsumePerSwap: 0
-  magicRequired: 20
+  magicConsumePerUse: 100
+  magicConsumePerSwap: 20
   destinationAbsorb: {fileID: 7428418889734491041, guid: 55d51726357e49a4dae9b44f98ad5bcb,
     type: 3}
   renderScales: 10

@@ -31,8 +31,8 @@ public class SkillBubble : Skill
     
     void FixedUpdate()
     {
-        player.ConsumeMagic(Time.fixedDeltaTime * (player.magicRecoverRate + config.magicConsumePerSec));
-        if(player.magic.LEZ())
+        player.ConsumeMagic(Time.fixedDeltaTime * config.magicConsumePerSec);
+        if(player.inventory.carryingWand.curSlot.magic.LEZ())
         {
             DestroyImmediate(this);
             return;

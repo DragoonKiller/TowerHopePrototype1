@@ -4,7 +4,7 @@ using UnityEngine;
 public class DefenceBubble : MonoBehaviour
 {
     public SkillBubbleConfig config;
-    public PlayerState player;
+    public Protagonist player;
     
     void Start()
     {

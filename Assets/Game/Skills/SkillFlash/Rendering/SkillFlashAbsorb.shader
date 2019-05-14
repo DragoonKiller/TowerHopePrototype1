@@ -51,7 +51,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 pos = 2.0 * (i.uv - float2(0.5, 0.5));
+                float2 pos = (i.uv - float2(0.5, 0.5));
                 float dist = sqrt(pos.x * pos.x + pos.y * pos.y);
                 // if(dist < radius- width || dist > radius + width) discard;
                 float rate = abs(radius - dist) / width;

@@ -6,10 +6,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public class MagicBarDisplay : MonoBehaviour
 {
-    public PlayerState target;
+    public Inventory target;
     Slider slider => this.GetComponent<Slider>();
     void Update()
     {
-        slider.value = target.magic / target.maxMagic;
+        slider.value = target.carryingWand.curSlot.magic / target.carryingWand.curSlot.maxMagic;
     }
 }

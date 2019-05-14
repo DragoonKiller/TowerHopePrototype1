@@ -22,14 +22,13 @@ public class SkillFlash : Skill
         
         physTimer = 0f;
         transfered = false;
-        this.transform.localScale = Vector3.one;
         
         destinationAbsorb = Instantiate(config.destinationAbsorb);
         destinationAbsorb.transform.position = destination;
         destinationAbsorb.transform.localScale = Vector2.one * config.renderScales;
         
         var mat = destinationAbsorb.GetComponent<SpriteRenderer>().material;
-        mat.SetFloat("radius", config.swapDist / config.renderScales * 2.0f);
+        mat.SetFloat("radius", config.swapDist / config.renderScales);
         mat.SetFloat("width", config.swapDist / config.renderScales / 10.0f);
         absorbRenderer.color = absorbRenderer.color.A(0f);
     }
@@ -40,7 +39,6 @@ public class SkillFlash : Skill
         if(displayTimer < config.hideTime)
         {
             var rate = 1.0f - physTimer / config.hideTime;
-            this.gameObject.transform.localScale = Vector2.one * rate;
             
             absorbRenderer.color = absorbRenderer.color.A(displayTimer / config.hideTime);
             
@@ -58,7 +56,6 @@ public class SkillFlash : Skill
             if(curTime.LE(config.appearTime))
             {
                 absorbRenderer.color = absorbRenderer.color.A(1.0f - curTime / config.appearTime);
-                this.gameObject.transform.localScale = Vector2.one * (curTime / config.appearTime);
             }
             else
             {
@@ -94,7 +91,6 @@ public class SkillFlash : Skill
     
     void OnDestroy()
     {
-        this.transform.localScale = Vector2.one;
         if(transfered) rd.velocity = Vector2.zero;
         DestroyImmediate(destinationAbsorb);
     }

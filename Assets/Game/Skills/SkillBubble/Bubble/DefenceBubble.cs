@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class DefenceBubble : MonoBehaviour
 {
+    public SkillSpec spec;
     public SkillBubbleConfig config;
-    public Protagonist player;
+    public Protagonist protagonist;
     
     void Start()
     {
-        
+        this.transform.localScale = Vector3.one * (1.0f + config.rangePerIndicatorStone * spec.Count(StoneType.Indicator));
     }
     
     void Update()
     {
-        this.transform.position = player.transform.position;
+        this.transform.position = protagonist.transform.position;
     }
     
     void FixedUpdate()
@@ -30,6 +31,6 @@ public class DefenceBubble : MonoBehaviour
         for(int i=0; i<c.contactCount; i++) avgContact += c.GetContact(i).point;
         avgContact /= c.contactCount;
         
-        player.rd.velocity += config.collisionSpeed * -((Vector2)this.transform.position).To(avgContact);
+        protagonist.rd.velocity += config.collisionSpeed * -((Vector2)this.transform.position).To(avgContact);
     }
 }

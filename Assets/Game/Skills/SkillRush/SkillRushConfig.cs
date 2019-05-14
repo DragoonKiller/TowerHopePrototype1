@@ -22,6 +22,7 @@ public class SkillRushConfig : SkillConfig
         var skill = UseSkill<SkillRush>(x, (s) =>
         {
             s.config = this;
+            s.spec = spec;
         });
         return skill;
     }

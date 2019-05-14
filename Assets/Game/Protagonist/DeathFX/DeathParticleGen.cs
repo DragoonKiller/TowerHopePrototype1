@@ -28,7 +28,7 @@ public class DeathParticleGen : MonoBehaviour
             x.transform.position = this.transform.position;
             x.transform.localScale = Random.Range(minScale, maxScale) * Vector3.one;
             var p = x.GetComponent<DeathParticle>();
-            p.velocity = Vector2.right.Rot(Random.Range(0, 90) * Mathf.Deg2Rad) * Random.Range(minSpeed, maxSpeed);
+            p.velocity = Vector2.right.Rot(Random.Range(0, 360) * Mathf.Deg2Rad) * Random.Range(minSpeed, maxSpeed);
             p.lifeTime = Random.Range(minLifeTime, maxLifeTime);
         }
     }

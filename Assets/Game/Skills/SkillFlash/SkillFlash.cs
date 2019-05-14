@@ -73,8 +73,9 @@ public class SkillFlash : Skill
             if(!transfered)
             {
                 bool swapped = Transfer();
-                if(swapped) player.ConsumeMagic(config.magicConsumePerSwap);
-                else player.ConsumeMagic(config.magicConsumePerUse);
+                float magicCost = 0f.Max(1.0f - config.efficiencyPerNatureStone * spec.Count(StoneType.Nature));
+                if(swapped) protagonist.inventory.curWand.curSlot.ConsumeMagic(config.magicConsumePerSwap * magicCost);
+                else protagonist.inventory.curWand.curSlot.ConsumeMagic(config.magicConsumePerUse * magicCost);
                  
                 this.transform.position = destination;
                 transfered = true;
@@ -107,7 +108,7 @@ public class SkillFlash : Skill
         {
             var bullet = h.collider.gameObject.GetComponent<MonsterBullet>();
             if(bullet == null) continue;
-            bullet.GetComponent<Rigidbody2D>().position += (Vector2)player.transform.position - destination;
+            bullet.GetComponent<Rigidbody2D>().position += (Vector2)protagonist.transform.position - destination;
             swapped = true;
         }
         return swapped;
@@ -117,9 +118,9 @@ public class SkillFlash : Skill
     {
         Vector2 res = Vector2.zero;
         var target = Util.cursorWorldPosition;
-        var cur = (Vector2)player.transform.position;
+        var cur = (Vector2)protagonist.transform.position;
         var move = target - cur;
-        move = move.Len(config.maxDist.Min(move.magnitude));
+        move = move.Len((config.maxDist * config.rangePerIndicatorStone).Min(move.magnitude));
         
         // Using step cast method,
         //   because Physics2D.RaycastAll will *not* return multiple contacts for one collider.

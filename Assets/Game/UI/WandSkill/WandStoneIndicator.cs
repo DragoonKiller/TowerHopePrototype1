@@ -10,13 +10,11 @@ public class WandStoneIndicator : MonoBehaviour
     public Inventory inventory;
     public GameObject[] displayers;
     
-    Wand wand => inventory.carryingWand;
-    
     void Update()
     {
-        var curSkillSlot = wand.curSlot;
+        var curSkillSlot = inventory.curWand.curSlot;
         int cc = 0;
-        for(int i=0; i < SkillSpec.maxCount && i < wand.curSlot.slotCount && cc < displayers.Length; i++)
+        for(int i=0; i < SkillSpec.maxCount && i < inventory.curWand.curSlot.slotCount && cc < displayers.Length; i++)
         {
             if(curSkillSlot[i].stoneType != StoneType.None)
             {

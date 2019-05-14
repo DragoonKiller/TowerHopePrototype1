@@ -4,6 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Protagonist))]
 public abstract class Skill : MonoBehaviour
 {
-    protected Protagonist player => this.GetComponent<Protagonist>();
+    public SkillSpec spec;
+    
+    protected Protagonist protagonist => this.GetComponent<Protagonist>();
+    protected ContactDetector contactDetector => this.GetComponent<ContactDetector>();
     protected Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
 }

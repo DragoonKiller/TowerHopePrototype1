@@ -10,6 +10,6 @@ public class MagicBarDisplay : MonoBehaviour
     Slider slider => this.GetComponent<Slider>();
     void Update()
     {
-        slider.value = target.carryingWand.curSlot.magic / target.carryingWand.curSlot.maxMagic;
+        slider.value = target.curWand.curSlot.magic / target.curWand.curSlot.maxMagic;
     }
 }

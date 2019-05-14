@@ -2976,7 +2976,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 606614681}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -245.22, y: -30.48, z: -10}
+  m_LocalPosition: {x: -245.09, y: -30.48, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2140670357}
@@ -3031,8 +3031,9 @@ GameObject:
   - component: {fileID: 610850529}
   - component: {fileID: 610850532}
   - component: {fileID: 610850534}
+  - component: {fileID: 610850530}
   m_Layer: 29
-  m_Name: Player
+  m_Name: Protagonist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3046,7 +3047,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610850527}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -245.22, y: -31.48, z: 0}
+  m_LocalPosition: {x: -245.09, y: -31.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1829646818}
@@ -3068,10 +3069,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80602cb0240d5d7408ab27445a58322e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 74c70a911ceb78d48ba819faa6b67df9, type: 2}
   inventory: {fileID: 448481446969775584}
-  reviveBeacon: {fileID: 328925775}
+  skillMove: {fileID: 610850534}
   curSkillState: {fileID: 0}
-  reactToPlayer: 1
+  reviveBeacon: {fileID: 328925775}
+  sprite: {fileID: 196650282}
+--- !u!114 &610850530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610850527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ee18e9a29f3a0c49836c5956d880c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   contactCount: 0
 --- !u!50 &610850532
 Rigidbody2D:
@@ -3106,6 +3121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f102b3397c80740478467ef3aa1fefb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  commandLeft: 0
+  commandRight: 0
+  commandJump: 0
   moveSpeed: 3.2
   jumpSpeed: 3.2
   stableAngle: 52
@@ -3396,7 +3414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5124c08d8d6bec4ea0d89c533790953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 610850529}
+  protagonist: {fileID: 610850529}
   skills: {fileID: 11400000, guid: f4a557191608e274fac27003e2d87458, type: 2}
   displayBegin: 0.5
   displayScale: 20.099998
@@ -3442,7 +3460,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 517b57e29b5c8a340b79716c0b075222, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6460771}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5230,7 +5248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f339a4b277d999e49a93fb18d98f78ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 610850529}
+  protagonist: {fileID: 610850529}
   inventory: {fileID: 448481446969775584}
 --- !u!1001 &1109455740
 PrefabInstance:
@@ -6167,7 +6185,7 @@ MonoBehaviour:
   refresh: 0
   reset: 0
   config: {fileID: 11400000, guid: 1320dccda6900d44b9e27f8bc26a8025, type: 2}
-  player: {fileID: 610850529}
+  protagonist: {fileID: 610850529}
 --- !u!1 &1383381075
 GameObject:
   m_ObjectHideFlags: 0
@@ -9985,14 +10003,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathParticle: {fileID: 7288678724960889483, guid: 044f38fac951bec4a8c06e7ef6d4de1a,
     type: 3}
-  maxCount: 5
-  minCount: 3
-  maxScale: 2
-  minScale: 3
-  minSpeed: 3
-  maxSpeed: 1
-  maxLifeTime: 1
-  minLifeTime: 0.3
+  maxCount: 16
+  minCount: 8
+  maxScale: 3
+  minScale: 0.5
+  minSpeed: 2
+  maxSpeed: 9
+  maxLifeTime: 2
+  minLifeTime: 0.9
 --- !u!1 &1921447147
 GameObject:
   m_ObjectHideFlags: 0
@@ -11160,7 +11178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wands: {fileID: 8046550370287147026}
-  carryingWand: {fileID: 2213477534322273935}
+  curWand: {fileID: 2213477534322273935}
   stones: {fileID: 8654756328937114298}
 --- !u!212 &451284930958769229
 SpriteRenderer:

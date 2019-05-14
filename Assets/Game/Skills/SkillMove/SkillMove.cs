@@ -7,6 +7,10 @@ using UnityEngine;
 
 public class SkillMove : MonoBehaviour
 {
+    public bool commandLeft;
+    public bool commandRight;
+    public bool commandJump;
+    
     public float moveSpeed;
     
     public float jumpSpeed;
@@ -24,16 +28,6 @@ public class SkillMove : MonoBehaviour
     
     float gravityScale;
     
-    // Use default gravity.
-    Vector2 gravity => Physics2D.gravity * gravityScale;
-    
-    // The default gravity direction is down.
-    // Unity uses left-hand coordinates.
-    // Reverse the angle here.
-    Vector2 downDir => Vector2.down.Rot(-this.transform.eulerAngles.z);
-    
-    CoordSys localCoord => new CoordSys(downDir.RotHalfPi(), -downDir);
-    
     /// Used for post-command jumping.
     /// When player pressed JumpKey and the protagonist does not touching the ground,
     /// There's a count down that will make protagonist jump after reaching the ground.
@@ -49,13 +43,29 @@ public class SkillMove : MonoBehaviour
     [SerializeField] string curStateDisplay;
     [SerializeField] string velocityDispaly;
     
+    // Use default gravity.
+    Vector2 gravity => Physics2D.gravity * gravityScale;
+    
+    // The default gravity direction is down.
+    // Unity uses left-hand coordinates.
+    // Reverse the angle here.
+    Vector2 downDir => Vector2.down.Rot(-this.transform.eulerAngles.z);
+    
+    CoordSys localCoord => new CoordSys(downDir.RotHalfPi(), -downDir);
+    
+    bool flying => !standing;
+    
+    Protagonist protagonist => this.GetComponent<Protagonist>();
+    Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
+    ContactDetector contactDetector => this.GetComponent<ContactDetector>();
+    
     /// The protagonist is on the fly.
     bool standingStable
     {
         // Criterion: there *exists* a collision with angle between normal and gravity is less than groundAngle.
         get
         {
-            foreach(var c in player.recentContacts)
+            foreach(var c in contactDetector.recentContacts)
             {
                 var pt = c.normal;
                 if(Vector2.Angle(pt, -gravity).LE(stableAngle)) return true; 
@@ -71,7 +81,7 @@ public class SkillMove : MonoBehaviour
         // Criterion: there *exists* a collision with angles between normal and gravity is less than or equal to 90 degrees.
         get
         {
-            foreach(var c in player.recentContacts)
+            foreach(var c in contactDetector.recentContacts)
             {
                 var pt = c.normal;
                 if(Vector2.Angle(pt, -gravity).LE(groundAngle)) return true; 
@@ -80,10 +90,6 @@ public class SkillMove : MonoBehaviour
         }
     }
     
-    bool flying => !standing;
-    
-    Protagonist player => this.GetComponent<Protagonist>();
-    Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
     
     void Start()
     {
@@ -97,8 +103,6 @@ public class SkillMove : MonoBehaviour
         else curStateDisplay = "flying";
         
         velocityDispaly = rd.velocity.ToString();
-        
-        
     }
     
     void FixedUpdate()
@@ -108,9 +112,9 @@ public class SkillMove : MonoBehaviour
         // (if the speed is not too large...)
         rd.velocity += gravity * Time.fixedDeltaTime;
         
-        if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) ActionStop();
-        else if(Input.GetKey(KeyCode.A)) ActionLeft();
-        else if(Input.GetKey(KeyCode.D)) ActionRight();
+        if(commandLeft && commandRight) ActionStop();
+        else if(commandLeft) ActionLeft();
+        else if(commandRight) ActionRight();
         else ActionStop();
         
         offGroundTimer += Time.fixedDeltaTime;
@@ -119,7 +123,14 @@ public class SkillMove : MonoBehaviour
         repeatJumpTimer = 0f.Max(repeatJumpTimer - Time.fixedDeltaTime);
         
         delayedJumpTimer = 0f.Max(delayedJumpTimer - Time.fixedDeltaTime);
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) delayedJumpTimer = jumpCooldown;
+        
+        // The jump command is an evnet instead of a state, so we cancel the command after apply the jumping.
+        if(commandJump)
+        {
+            delayedJumpTimer = jumpCooldown;
+            commandJump = false;
+        }
+        
         ActionJump();
     }
     
@@ -133,7 +144,7 @@ public class SkillMove : MonoBehaviour
     {
         Vector2 DirectionalReduceVelocity(Vector2 vs)
         {
-            foreach(var c in player.recentContacts) if(c.collider != null)
+            foreach(var c in contactDetector.recentContacts) if(c.collider != null)
             {
                 if(movingCoord.WorldToLocal(c.normal).Dot(Vector2.right).GEZ()) continue;
                 var groundCoord = new CoordSys(c.normal, c.normal.RotHalfPi());

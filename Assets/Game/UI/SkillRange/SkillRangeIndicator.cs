@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class SkillRangeIndicator : MonoBehaviour
 {
-    public Protagonist player;
+    public Protagonist protagonist;
     public SkillTable skills;
     
     public float displayBegin;
@@ -24,7 +24,7 @@ public class SkillRangeIndicator : MonoBehaviour
     {
         var mat = rd.sharedMaterial;
         float radius = 0;
-        switch(player.inventory.carryingWand.curSkillId)
+        switch(protagonist.inventory.curWand.curSkillId)
         {
             case 0 : radius = skills["rush"].config.range; break;
             case 1 : radius = skills["bubble"].config.range; break;
@@ -40,7 +40,7 @@ public class SkillRangeIndicator : MonoBehaviour
         
         rd.enabled = true;
         displayScale = radius * 3;
-        Vector2 delta = Util.cursorWorldPosition - (Vector2)player.transform.position;
+        Vector2 delta = Util.cursorWorldPosition - (Vector2)protagonist.transform.position;
         rd.transform.localScale = Vector2.one * displayScale;
         mat.SetInt("partCount", (int)(basicPartCount * radius).Max(minPartCount));
         mat.SetFloat("radius", radius / displayScale);

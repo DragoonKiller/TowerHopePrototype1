@@ -11,5 +11,12 @@ public class SkillBubbleConfig : SkillConfig
     public float magicConsumePerSec;
     public float collisionSpeed;
     
-    public override Skill Build(Protagonist x, SkillSpec spec) => UseSkill<SkillBubble>(x, (s) => { s.config = this; });
+    public override Skill Build(Protagonist x, SkillSpec spec)
+    {
+        return UseSkill<SkillBubble>(x, (s) =>
+        {
+            s.config = this;
+            s.spec = spec;
+        });
+    }
 }

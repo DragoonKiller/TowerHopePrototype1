@@ -12,6 +12,6 @@ public class SkillTags : MonoBehaviour
     
     void Update()
     {
-        image.sprite = skills[inventory.carryingWand.curSkillSpec].sprite;
+        image.sprite = skills[inventory.curWand.curSkillSpec].sprite;
     }
 }

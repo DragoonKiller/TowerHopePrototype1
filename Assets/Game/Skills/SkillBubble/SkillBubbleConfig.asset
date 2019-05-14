@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 0
   magicRequired: 12
+  rangePerIndicatorStone: 1
+  efficiencyPerNatureStone: 0.2
   bubbleSource: {fileID: 7973043502554926232, guid: 9aca5765973daff48a6211f66f15f0e4,
     type: 3}
   speed: 0.4
   accPerPhysicsFrame: 0.3
-  magicConsumePerSec: 24
+  magicConsumePerSec: 32
   collisionSpeed: 8

@@ -28,16 +28,16 @@ public class SkillRush : Skill
         
         GetComponent<SkillMove>().enabled = false;
         
-        recordSpriteColor = player.sprite.color;
-        recordTrailStartColor = player.trail.startColor;
-        recordTrailEndColor = player.trail.endColor;
+        recordSpriteColor = protagonist.sprite.color;
+        recordTrailStartColor = protagonist.trail.startColor;
+        recordTrailEndColor = protagonist.trail.endColor;
         
-        player.sprite.color = config.activeColor;
-        player.trail.startColor = config.activeColor.A(player.trail.startColor);
-        player.trail.endColor = config.activeColor.A(player.trail.endColor);
+        protagonist.sprite.color = config.activeColor;
+        protagonist.trail.startColor = config.activeColor.A(protagonist.trail.startColor);
+        protagonist.trail.endColor = config.activeColor.A(protagonist.trail.endColor);
         
         lifeTime = 0f;
-        stopTime = config.stopTime;
+        stopTime = config.stopTime * (1.0f + config.rangePerIndicatorStone * spec.Count(StoneType.Indicator));
     }
     
     void Update()
@@ -57,19 +57,21 @@ public class SkillRush : Skill
     
     void FixedUpdate()
     {
+        float magicCost = 0f.Max(1.0f - config.efficiencyPerNatureStone * spec.Count(StoneType.Nature));
+        
         // Consume player's magic.
         // Do not allow magic recover when using this skill.
         if(!stuck)
         {
-            player.ConsumeMagic(Time.fixedDeltaTime * config.magicConsumePerSec);
+            protagonist.inventory.curWand.curSlot.ConsumeMagic(Time.fixedDeltaTime * config.magicConsumePerSec * magicCost);
         }
         else
         {
-            player.ConsumeMagic(Time.fixedDeltaTime * config.stickMagicConsumePerSec);
+            protagonist.inventory.curWand.curSlot.ConsumeMagic(Time.fixedDeltaTime * config.stickMagicConsumePerSec * magicCost);
         }
         
         
-        if(player.inventory.carryingWand.curSlot.magic.LEZ())
+        if(protagonist.inventory.curWand.curSlot.magic.LEZ())
         {
             DestroyImmediate(this);
             return;
@@ -78,10 +80,10 @@ public class SkillRush : Skill
         // If player ran into something, the protagonist will stick on it,
         //   until player stop the skill or the magic is used up.
         
-        if(!stuck && player.recentContacts.Count > 0 && canBeStucked)
+        if(!stuck && contactDetector.recentContacts.Count > 0 && canBeStucked)
         {
             ContactPoint2D terrainContact = new ContactPoint2D();
-            foreach(var c in player.recentContacts)
+            foreach(var c in contactDetector.recentContacts)
             {
                 // The collided object was destroyed.
                 // It must not be a terrain object.
@@ -129,9 +131,9 @@ public class SkillRush : Skill
     
     void OnDestroy()
     {
-        player.sprite.color = recordSpriteColor;
-        player.trail.startColor = recordTrailStartColor;
-        player.trail.endColor = recordTrailEndColor;
+        protagonist.sprite.color = recordSpriteColor;
+        protagonist.trail.startColor = recordTrailStartColor;
+        protagonist.trail.endColor = recordTrailEndColor;
         if(stickEffect) DestroyImmediate(stickEffect);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<SkillMove>().enabled = true;

@@ -25,9 +25,9 @@ namespace MarchingCube
         public ChunkConfig config;
         
         /// Position tracer.
-        public Protagonist player;
+        public Protagonist protagonist;
         
-        Vector2 curPos => player.transform.position;
+        Vector2 curPos => protagonist.transform.position;
         
         Vector2 cachedCurPos;
         

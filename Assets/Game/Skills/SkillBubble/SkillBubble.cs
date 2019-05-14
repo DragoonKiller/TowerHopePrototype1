@@ -13,8 +13,9 @@ public class SkillBubble : Skill
         this.GetComponent<SkillMove>().enabled = false;
         
         bubble = Instantiate(config.bubbleSource, this.transform, false).GetComponent<DefenceBubble>();
-        bubble.player = player;
+        bubble.protagonist = protagonist;
         bubble.config = config;
+        bubble.spec = spec;
         
         // Place it to the center of player.
         bubble.transform.localPosition = Vector3.zero;
@@ -31,8 +32,9 @@ public class SkillBubble : Skill
     
     void FixedUpdate()
     {
-        player.ConsumeMagic(Time.fixedDeltaTime * config.magicConsumePerSec);
-        if(player.inventory.carryingWand.curSlot.magic.LEZ())
+        float magicCost = 0f.Max(1.0f - config.efficiencyPerNatureStone * spec.Count(StoneType.Nature));
+        protagonist.inventory.curWand.curSlot.ConsumeMagic(Time.fixedDeltaTime * config.magicConsumePerSec * magicCost);
+        if(protagonist.inventory.curWand.curSlot.magic.LEZ())
         {
             DestroyImmediate(this);
             return;

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 6
   magicRequired: 100
+  rangePerIndicatorStone: 0.25
+  efficiencyPerNatureStone: 0.25
   hideTime: 0.33333334
   appearTime: 0.1
   maxDist: 6

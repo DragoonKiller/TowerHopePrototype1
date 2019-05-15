@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,12 +16,5 @@ public class SkillFlashConfig : SkillConfig
     public GameObject destinationAbsorb;
     public float renderScales;
     
-    public override Skill Build(Protagonist x, SkillSpec spec)
-    {
-        return UseSkill<SkillFlash>(x, (s) =>
-        {
-            s.config = this;
-            s.spec = spec;
-        });
-    }
+    public override Type skillType => typeof(SkillFlash);
 }

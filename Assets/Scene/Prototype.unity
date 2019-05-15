@@ -5250,6 +5250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   protagonist: {fileID: 610850529}
   inventory: {fileID: 448481446969775584}
+  skillTable: {fileID: 11400000, guid: f4a557191608e274fac27003e2d87458, type: 2}
 --- !u!1001 &1109455740
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11355,6 +11356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!114 &1460355208019396584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11368,6 +11370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!4 &1565446877800607730
 Transform:
   m_ObjectHideFlags: 0
@@ -11741,6 +11744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!1 &3562002613893326522
 GameObject:
   m_ObjectHideFlags: 0
@@ -11846,9 +11850,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cb0d8eb97187c84a967d7281912d1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 0}
+  config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
   skillTable: {fileID: 11400000, guid: f4a557191608e274fac27003e2d87458, type: 2}
-  skillName: Rush
+  skillName: SkillRushConfig
 --- !u!114 &4073857114518817731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11862,6 +11866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!114 &4291429980144401540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11909,6 +11914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!114 &4740698534179681030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11980,9 +11986,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cb0d8eb97187c84a967d7281912d1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 0}
+  config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
   skillTable: {fileID: 11400000, guid: f4a557191608e274fac27003e2d87458, type: 2}
-  skillName: Flash
+  skillName: SkillFlashConfig
 --- !u!114 &5114886018518449010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12010,6 +12016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!114 &5225266825601368356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12052,9 +12059,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cb0d8eb97187c84a967d7281912d1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 0}
+  config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
   skillTable: {fileID: 11400000, guid: f4a557191608e274fac27003e2d87458, type: 2}
-  skillName: Bubble
+  skillName: SkillBubbleConfig
 --- !u!4 &5915412782458390398
 Transform:
   m_ObjectHideFlags: 0
@@ -12336,7 +12343,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8385077700743128221}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -235.9, y: -9.789999, z: -0.53125}
+  m_LocalPosition: {x: -229.78, y: 10.63, z: -0.53125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1565446877800607730}
@@ -12542,6 +12549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: -0.7661896, y: 0.6645851}
 --- !u!114 &8643579380565734400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12605,6 +12613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!114 &8914454186155215332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12618,6 +12627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 34467e9e8e2cd7f42917cd3dc6bfbc99, type: 2}
+  cancelButtonPosition: {x: 0, y: 0}
 --- !u!114 &8963274952859130087
 MonoBehaviour:
   m_ObjectHideFlags: 0

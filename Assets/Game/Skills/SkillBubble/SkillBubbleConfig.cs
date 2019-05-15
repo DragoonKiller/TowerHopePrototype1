@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +12,6 @@ public class SkillBubbleConfig : SkillConfig
     public float magicConsumePerSec;
     public float collisionSpeed;
     
-    public override Skill Build(Protagonist x, SkillSpec spec)
-    {
-        return UseSkill<SkillBubble>(x, (s) =>
-        {
-            s.config = this;
-            s.spec = spec;
-        });
-    }
+    public override Type skillType => typeof(SkillBubble);
+    
 }

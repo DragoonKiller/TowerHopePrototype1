@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillBubble : Skill
 {
-    public SkillBubbleConfig config;
+    public new SkillBubbleConfig config => base.config as SkillBubbleConfig;
     
     [SerializeField] DefenceBubble bubble;
     

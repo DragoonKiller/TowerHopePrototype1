@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillFlash : Skill
 {
-    public SkillFlashConfig config;
+    public new SkillFlashConfig config => base.config as SkillFlashConfig;
     
     public Vector2 destination;
     
@@ -120,7 +120,7 @@ public class SkillFlash : Skill
         var target = Util.cursorWorldPosition;
         var cur = (Vector2)protagonist.transform.position;
         var move = target - cur;
-        move = move.Len((config.maxDist * config.rangePerIndicatorStone).Min(move.magnitude));
+        move = move.Len((config.maxDist * (1.0f + config.rangePerIndicatorStone * config.rangePerIndicatorStone)).Min(move.magnitude));
         
         // Using step cast method,
         //   because Physics2D.RaycastAll will *not* return multiple contacts for one collider.

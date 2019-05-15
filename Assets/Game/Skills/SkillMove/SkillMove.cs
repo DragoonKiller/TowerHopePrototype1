@@ -53,14 +53,12 @@ public class SkillMove : MonoBehaviour
     
     CoordSys localCoord => new CoordSys(downDir.RotHalfPi(), -downDir);
     
-    bool flying => !standing;
-    
     Protagonist protagonist => this.GetComponent<Protagonist>();
     Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
     ContactDetector contactDetector => this.GetComponent<ContactDetector>();
     
     /// The protagonist is on the fly.
-    bool standingStable
+    public bool standingStable
     {
         // Criterion: there *exists* a collision with angle between normal and gravity is less than groundAngle.
         get
@@ -76,7 +74,7 @@ public class SkillMove : MonoBehaviour
     
     /// The protagonist is standing on a surface, stable or not.
     /// This case should completely cover standingStable case.
-    bool standing
+    public bool standing
     {
         // Criterion: there *exists* a collision with angles between normal and gravity is less than or equal to 90 degrees.
         get
@@ -89,6 +87,8 @@ public class SkillMove : MonoBehaviour
             return false;
         }
     }
+    
+    public bool flying => !standing;
     
     
     void Start()

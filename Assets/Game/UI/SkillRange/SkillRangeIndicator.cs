@@ -23,14 +23,7 @@ public class SkillRangeIndicator : MonoBehaviour
     void Update()
     {
         var mat = rd.sharedMaterial;
-        float radius = 0;
-        switch(protagonist.inventory.curWand.curSkillId)
-        {
-            case 0 : radius = skills["rush"].config.range; break;
-            case 1 : radius = skills["bubble"].config.range; break;
-            case 2 : radius = skills["flash"].config.range; break;
-            default : break;
-        }
+        float radius = protagonist.inventory.curWand.curSkillConfig.range;
         
         if(radius.LEZ())
         {

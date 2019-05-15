@@ -19,6 +19,12 @@ public static partial class Util
             if(!list.Remove(x)) throw new InvalidOperationException("Try to remove non-exist object from Register.");
         }
         
+        public bool Registered(T x)
+        {
+            foreach(var i in list) if(x == i) return true;
+            return false;
+        }
+        
         public int count => list.Count;
         public bool empty => list.Count == 0;
     }
@@ -38,6 +44,8 @@ public static partial class Util
             if(value != x) throw new InvalidOperationException("Try to remove non-exist object from UniqueRegister.");
             value = null;
         }
+        
+        public bool Registered(T x) => value == x;
         
         public bool registered => value != null;
     }

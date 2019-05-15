@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Skill : MonoBehaviour
 {
     public SkillSpec spec;
+    public SkillConfig config;
     
     protected Protagonist protagonist => this.GetComponent<Protagonist>();
     protected ContactDetector contactDetector => this.GetComponent<ContactDetector>();

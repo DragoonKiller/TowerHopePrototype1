@@ -8,22 +8,44 @@ public class PlayerController : MonoBehaviour
 {
     public Protagonist protagonist;
     public Inventory inventory;
+    public SkillTable skillTable;
     
     Wand wand => inventory.curWand;
     Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
     
     void Update()
     {
+        ChangeSpec();
+        
         // The controller will do nothing if the protagonist does not allow the control...
         if(protagonist.requireControl.registered)
         {
             Stop();
             return;
         }
-        
         Move();
         SelectSkill();
         UseSkill();
+    }
+    
+    void ChangeSpec()
+    {
+        if(!Input.GetKeyDown(KeyCode.Tab)) return;
+        
+        if(protagonist.requireControl.Registered(this))
+        {
+            protagonist.requireControl.Remove(this);
+            return;
+        }
+        
+        if(!protagonist.requireControl.registered)
+        {
+            if(!protagonist.skillMove.enabled) return;
+            if(!protagonist.skillMove.standingStable) return;
+            protagonist.requireControl.Register(this);
+            return;
+        }
+        
     }
     
     void Stop()
@@ -64,7 +86,9 @@ public class PlayerController : MonoBehaviour
         
         if(wand.skillPrepared)
         {
-            protagonist.curSkillState = wand.curSkillConfig.Build(protagonist, wand.curSkillSpec);
+            Skill skill = protagonist.gameObject.AddComponent(skillTable[wand.curSkillSpec].skillType) as Skill;
+            protagonist.curSkillState = skill;
+            skill.config = skillTable[wand.curSkillSpec];
         }
     }
     

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,15 +16,7 @@ public class SkillRushConfig : SkillConfig
     public GameObject stickEffectTemplate;
     public Color activeColor;
     
-    public float magicConsumePerSec => magicConsumePerUse / lifeTime;  
+    public override Type skillType => typeof(SkillRush);
     
-    public override Skill Build(Protagonist x, SkillSpec spec)
-    {
-        var skill = UseSkill<SkillRush>(x, (s) =>
-        {
-            s.config = this;
-            s.spec = spec;
-        });
-        return skill;
-    }
+    public float magicConsumePerSec => magicConsumePerUse / lifeTime;  
 }

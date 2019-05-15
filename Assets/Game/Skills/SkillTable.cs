@@ -6,18 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SkillTable", menuName = "ScriptableObjects/Skill Table", order = 17)]
 public class SkillTable : ScriptableObject
 {
-    [Serializable]
-    public class SkillData
-    {
-        public string name;
-        public SkillSpec spec;
-        public Sprite sprite;
-        public SkillConfig config;
-    }
+    public SkillConfig[] data;
     
-    public SkillData[] data;
-    
-    public SkillData this[SkillSpec x]
+    public SkillConfig this[SkillSpec x]
     {
         get
         {
@@ -26,18 +17,12 @@ public class SkillTable : ScriptableObject
         }
     }
     
-    public SkillData this[string x]
+    public SkillConfig this[string x]
     {
         get
         {
             foreach(var i in data) if(i.name.ToLower() == x.ToLower()) return i;
             return null; 
         }
-    }
-    
-    public Skill BuildFromSpec(SkillSpec spec, Protagonist x)
-    {
-        foreach(var i in data) if(i.spec.SameSkill(spec)) return i.config.Build(x, spec);
-        return null;
     }
 }

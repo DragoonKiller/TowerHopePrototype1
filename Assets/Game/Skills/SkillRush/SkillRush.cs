@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillRush : Skill
 {
-    public SkillRushConfig config;
+    public new SkillRushConfig config => base.config as SkillRushConfig;
     
     public Vector2 targetVelocity;
     public Vector2 curVelocity;

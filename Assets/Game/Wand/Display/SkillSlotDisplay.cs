@@ -9,6 +9,7 @@ public class SkillSlotDisplay : MonoBehaviour
     SkillSlot slot => this.GetComponent<SkillSlot>();
     SpriteRenderer rd => this.GetComponent<SpriteRenderer>();
     
+    // Inspecting only.
     public string skillName;
     
     void Update()

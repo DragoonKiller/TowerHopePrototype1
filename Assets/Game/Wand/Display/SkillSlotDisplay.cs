@@ -18,4 +18,14 @@ public class SkillSlotDisplay : MonoBehaviour
         if(data == null) skillName = "Undefined";
         else skillName = data.name;
     }
+    
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        foreach(var i in slot.slots)
+        {
+            Gizmos.DrawWireCube(i.transform.position, Vector3.one);
+        }
+    }
+    
 }

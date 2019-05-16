@@ -32,7 +32,7 @@ public class WandStoneIndicator : MonoBehaviour
         for(int i=0; i<displayers.Length; i++)
         {
             var tr = displayers[i].GetComponent<RectTransform>();
-            Util.DebugDrawRect(tr.position, tr.rect.size, Color.green);
+            Util.EditorDrawRect(tr.position, tr.rect.size, Color.green);
         }
     }
     

@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SkillTable", menuName = "ScriptableObjects/Skill Table", order = 17)]
 public class SkillTable : ScriptableObject
 {
+    public SkillConfig none;
     public SkillConfig[] data;
     
     public SkillConfig this[SkillSpec x]
@@ -13,7 +14,7 @@ public class SkillTable : ScriptableObject
         get
         {
             foreach(var i in data) if(i.spec.SameSkill(x)) return i;
-            return null;
+            return none;
         }
     }
     
@@ -22,7 +23,7 @@ public class SkillTable : ScriptableObject
         get
         {
             foreach(var i in data) if(i.name.ToLower() == x.ToLower()) return i;
-            return null; 
+            return none; 
         }
     }
 }

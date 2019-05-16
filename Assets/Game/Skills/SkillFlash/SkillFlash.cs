@@ -18,7 +18,7 @@ public class SkillFlash : Skill
     void Start()
     {
         destination = FindDestination();
-        Util.DebugDrawCircle(destination, config.swapDist, 32, Color.red, 3f);
+        Util.EditorDrawCircle(destination, config.swapDist, 32, Color.red, 3f);
         
         physTimer = 0f;
         transfered = false;
@@ -136,7 +136,7 @@ public class SkillFlash : Skill
             
             if(hit.collider == null)
             {
-                Util.DebugDrawRect(curPos, Vector2.one * 0.1f, Color.red, 3f);
+                Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.red, 3f);
                 if(insideGround) res = prevOffGround - move.normalized * config.collisionPreventingDist;
                 else res = cur + move;
                 break;
@@ -144,13 +144,13 @@ public class SkillFlash : Skill
             
             if(hit.normal.Dot(move.normalized).EZ())
             {
-                Util.DebugDrawRect(curPos, Vector2.one * 0.1f, Color.yellow, 3f);
+                Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.yellow, 3f);
                 curPos += move.normalized * config.collisionPreventingDist;
                 restMove -= move.normalized * config.collisionPreventingDist;
                 continue;
             }
             
-            Util.DebugDrawRect(curPos, Vector2.one * 0.1f, Color.green, 3f);
+            Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.green, 3f);
             curPos = hit.point + move.normalized * config.collisionPreventingDist;
             restMove = cur + move - curPos;
             if(!insideGround) prevOffGround = hit.point - move.normalized * config.collisionPreventingDist;

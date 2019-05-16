@@ -46,7 +46,8 @@ namespace MarchingCube
         {
             if(reset)
             {
-                for(int i=0; i<this.transform.childCount; i++) DestroyImmediate(this.transform.GetChild(i).gameObject);
+                void DestroyGameObject(Transform x) => DestroyImmediate(x.gameObject);
+                this.transform.ForeachChild(DestroyGameObject);
                 refresh = true;
                 reset = false;
             }
@@ -85,11 +86,8 @@ namespace MarchingCube
         {
             if(currentChunksCache == null) currentChunksCache = new Dictionary<Vector2Int, GameObject>();
             currentChunksCache.Clear();
-            for(int i=0; i<this.transform.childCount; i++)
-            {
-                var g = this.transform.GetChild(i).gameObject;
-                currentChunksCache[g.name.DecodeChunkOffset()] = g;
-            }
+            void AddChunk(GameObject x) => currentChunksCache[x.name.DecodeChunkOffset()] = x;
+            this.gameObject.ForeachChild(AddChunk);
             return currentChunksCache;
         }
         

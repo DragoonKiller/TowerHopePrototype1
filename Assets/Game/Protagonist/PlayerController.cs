@@ -9,9 +9,13 @@ public class PlayerController : MonoBehaviour
     public Protagonist protagonist;
     public Inventory inventory;
     public SkillTable skillTable;
+    public ChangeSpecController changeSpecController;
     
     Wand wand => inventory.curWand;
     Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
+    
+    public bool ableToChangeSpec => protagonist.curSkillState == null && protagonist.skillMove.standingStable;
+    public bool changingSpec { get; private set; }
     
     void Update()
     {
@@ -23,6 +27,7 @@ public class PlayerController : MonoBehaviour
             Stop();
             return;
         }
+        
         Move();
         SelectSkill();
         UseSkill();
@@ -35,16 +40,21 @@ public class PlayerController : MonoBehaviour
         if(protagonist.requireControl.Registered(this))
         {
             protagonist.requireControl.Remove(this);
+            changeSpecController.active = false;
+            changingSpec = false;
             return;
         }
         
         if(!protagonist.requireControl.registered)
         {
-            if(!protagonist.skillMove.enabled) return;
-            if(!protagonist.skillMove.standingStable) return;
+            if(!ableToChangeSpec) return;
             protagonist.requireControl.Register(this);
+            changeSpecController.active = true;
+            changingSpec = true;
             return;
         }
+        
+        
         
     }
     

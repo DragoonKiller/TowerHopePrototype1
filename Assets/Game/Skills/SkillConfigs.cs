@@ -17,4 +17,6 @@ public abstract class SkillConfig : ScriptableObject
     public float efficiencyPerNatureStone;
     
     public abstract Type skillType { get; }
+    
+    public virtual bool isNone => false;
 }

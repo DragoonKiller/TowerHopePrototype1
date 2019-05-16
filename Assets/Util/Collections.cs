@@ -25,6 +25,44 @@ public static partial class Util
     }
     
     
+    public static int Cnt<T>(this T[] s, Predicate<T> f)
+    {
+        int res = 0;
+        foreach(var i in s) if(f(i)) res++;
+        return res;
+    }
+    
+    public static int Cnt<T>(this ICollection<T> s, Predicate<T> f)
+    {
+        int res = 0;
+        foreach(var i in s) if(f(i)) res++;
+        return res;
+    }
+    
+    
+    public static T[] Filter<T>(this T[] s, Predicate<T> f)
+    {
+        int cc = s.Cnt(f);
+        var res = new T[cc];
+        int cx = 0;
+        foreach(var i in s) if(f(i)) res[cx++] = i;
+        return res;
+    }
+    
+    public static List<T> Filter<T>(this List<T> s, Predicate<T> f)
+    {
+        var res = new List<T>();
+        foreach(var i in s) if(f(i)) res.Add(i);
+        return res;
+    }
+    
+    public static T[] Map<T, F>(this F[] s, Func<F, T> f)
+    {
+        var res = new T[s.Length];
+        for(int i=0; i<s.Length; i++) res[i] = f(s[i]);
+        return res;
+    }
+    
     public static List<T> Map<T, F>(this List<F> s, Func<F, T> f)
     {
         var x = new List<T>();

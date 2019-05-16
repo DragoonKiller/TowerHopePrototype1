@@ -10,8 +10,6 @@ public class StoneSlotDisplay : MonoBehaviour
     StoneSlot slot => this.GetComponent<StoneSlot>();
     SpriteRenderer rd => this.GetComponent<SpriteRenderer>();
     
-    public Vector2 cancelButtonPosition;
-    
     void Update()
     {
         var type = slot.stoneType;

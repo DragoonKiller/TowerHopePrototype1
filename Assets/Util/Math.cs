@@ -1,7 +1,10 @@
 using System;
+using UnityEngine;
+
+using System.Runtime;
 using System.Runtime.CompilerServices;
 
-using UnityEngine;
+
 
 public static partial class Util
 {
@@ -14,7 +17,7 @@ public static partial class Util
     }
     
     
-    public static float eps => 1e-6f;
+    public static float eps => 1e-4f;
     
     /// Float equal in linear space.
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -179,4 +182,62 @@ public static partial class Util
     public static int Sgn(this float x) => x.LZ() ? -1 : x.GZ() ? 1 : 0;
     
     
+    
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Dot(this Vector2 a, Vector2 b) => a.x * b.x + a.y * b.y;
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Cross(this Vector2 a, Vector2 b) => a.x * b.y - a.y * b.x;
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 X(this Vector2 a, float x) => new Vector2(x, a.y);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Y(this Vector2 a, float y) => new Vector2(a.x, y);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 X(this Vector3 a, float x) => new Vector3(x, a.y, a.z);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Y(this Vector3 a, float y) => new Vector3(a.x, y, a.z);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Z(this Vector3 a, float z) => new Vector3(a.x, a.y, z);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Len(this Vector2 a, float z) => a.normalized * z;
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Angle(this Vector2 a, float v) => a.normalized.Rot(v);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 To(this Vector2 a, Vector2 b) => b - a;
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 To(this Vector3 a, Vector3 b) => b - a;
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Dir(this (Vector2 from, Vector2 to) a) => a.from.To(a.to);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Angle(this Vector2 a) => Mathf.Atan2(a.y, a.x);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Rot(this Vector2 a, float t)
+        => new Vector2(a.x * t.Cos() - a.y * t.Sin(), a.x * t.Sin() + a.y * t.Cos());
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 RotHalfPi(this Vector2 a) => new Vector2(- a.y, a.x);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Reflect(this Vector2 dir, Vector2 dst)
+    {
+        var delta = dst.Cross(dir.normalized);
+        return dst + dir.normalized.RotHalfPi() * delta * 2.0f;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool CloseTo(this Vector2 a, Vector2 b) => a.To(b).magnitude.LEZ();
 }

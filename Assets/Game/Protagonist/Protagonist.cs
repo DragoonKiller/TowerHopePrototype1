@@ -16,7 +16,7 @@ public class Protagonist : MonoBehaviour
     public GameObject reviveBeacon;
     
     // Is there any script that required the overall control of protagonist?
-    public Util.UniqueRegister<MonoBehaviour> requireControl = new Util.UniqueRegister<MonoBehaviour>();
+    public Util.Register<MonoBehaviour> requireControl = new Util.Register<MonoBehaviour>();
     
     public Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
     public PolygonCollider2D col => this.GetComponentInChildren<PolygonCollider2D>();
@@ -28,10 +28,11 @@ public class Protagonist : MonoBehaviour
         reviveBeacon.transform.position = this.transform.position;
     }
     
+    
     void OnCollisionEnter2D(Collision2D c)
     {
-        // Only Monsters and MonsterBullets can hurt protagonist.
-        if(((1 << c.collider.gameObject.layer) & LayerMask.GetMask("Monster", "MonsterBullet")) == 0) return;
+        // Only Monsters, MonsterBullets, Disasters can hurt protagonist.
+        if(((1 << c.collider.gameObject.layer) & LayerMask.GetMask("Monster", "MonsterBullet", "Disaster")) == 0) return;
         
         DestroyPlayer();
     }

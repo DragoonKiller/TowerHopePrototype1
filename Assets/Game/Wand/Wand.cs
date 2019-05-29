@@ -16,7 +16,7 @@ public abstract class Wand : MonoBehaviour
     }
     
     public SkillSlot curSlot => skillsSlots[curSkillId];
-    public SkillConfig curSkillConfig => skillTable[curSlot.spec];
+    public SkillConfig curSkillConfig => skillTable[curSkillSpec];
     public SkillSpec curSkillSpec => curSlot.spec;
     public WandDisplay display => this.GetComponent<WandDisplay>();
     public bool skillPrepared => curSlot.magic >= curSkillConfig.magicRequired / curSlot.stoneCount;

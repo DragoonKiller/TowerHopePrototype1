@@ -22,8 +22,4 @@ public class StoneSlot : MonoBehaviour
     // The real magic.
     [SerializeField] float curMagic;
     
-    void FixedUpdate()
-    {
-        if(stone != null) magic += stone.magicRecoverRate * Time.fixedDeltaTime;
-    }
 }

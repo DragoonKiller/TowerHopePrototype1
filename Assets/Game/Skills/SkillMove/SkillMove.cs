@@ -57,6 +57,10 @@ public class SkillMove : MonoBehaviour
     Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
     ContactDetector contactDetector => this.GetComponent<ContactDetector>();
     
+    bool ableToJump => offGroundTimer < offGroundJumpTime
+            && delayedJumpTimer != 0.0f
+            && repeatJumpTimer == 0.0f;
+    
     /// The protagonist is on the fly.
     public bool standingStable
     {
@@ -162,12 +166,12 @@ public class SkillMove : MonoBehaviour
         else if(standingStable)
         {
             v.x = moveSpeed.Min(0f.Max(v.x) + accPerPhysicsFrame);
-            v.y = 0f.Max(v.y);
             DirectionalReduceVelocity(v);
+            v.y = 0f.Max(v.y);
         }
         else
         {
-            v = Vector2.right * moveSpeed * 0.5f;
+            // v = Vector2.right * moveSpeed * 0.5f;
             DirectionalReduceVelocity(v);
         }
         
@@ -189,7 +193,8 @@ public class SkillMove : MonoBehaviour
             /// The player will experience some slide-off-fly issue when simply moving on uneven ground.
             /// This may affect the "jump" operation.
             /// The temporary solution is offgroundTimer.
-            rd.velocity = rd.velocity.X(0).Y(rd.velocity.y.Max(0f));
+            if(delayedJumpTimer != 0f) rd.velocity = rd.velocity.X(0).Y(rd.velocity.y.Max(0f));
+            else rd.velocity = Vector2.zero;
         }
         else
         {
@@ -199,10 +204,7 @@ public class SkillMove : MonoBehaviour
     
     void ActionJump()
     {
-        if(offGroundTimer < offGroundJumpTime
-            && delayedJumpTimer != 0.0f
-            && repeatJumpTimer == 0.0f
-        )
+        if(ableToJump)
         {
             var localVelocity = localCoord.WorldToLocal(rd.velocity);
             localVelocity.y = jumpSpeed;

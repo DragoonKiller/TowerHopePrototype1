@@ -11,8 +11,6 @@ public class ContactDetector : MonoBehaviour
     [SerializeField] int contactCount = 0;
     public IReadOnlyList<ContactPoint2D> recentContacts => new ContactList() { maintainer = this };
     
-    
-    
     void Update()
     {
         foreach(var i in recentContacts) Debug.DrawRay(i.point, i.normal, Color.red);
@@ -37,10 +35,12 @@ public class ContactDetector : MonoBehaviour
         {
             for(int j=i+1; j<contactCount; j++)
             {
-                if(Vector2.Angle(recentContactsCache[i].normal, recentContactsCache[j].normal).LEZ())
+                bool isTerrain = recentContactsCache[i].collider.gameObject.layer == LayerMask.NameToLayer("Terrain");
+                bool runningIntoContact = Vector2.Angle(recentContactsCache[i].normal, recentContactsCache[j].normal).GZ();
+                if(!isTerrain || !runningIntoContact)
                 {
-                    (recentContactsCache[i], recentContactsCache[contactCount - 1]) =
-                        (recentContactsCache[contactCount - 1], recentContactsCache[i]);
+                    // Remove this collision point...
+                    (recentContactsCache[i], recentContactsCache[contactCount - 1]) = (recentContactsCache[contactCount - 1], recentContactsCache[i]);
                     contactCount--;
                     j--;
                 }

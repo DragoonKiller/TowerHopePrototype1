@@ -10,4 +10,5 @@ public class BarnacleConfig : ScriptableObject
     public float targetSpeed;
     public float accRatePerPhysFrame;
     public float cooldown;
+    public float reactDist;
 }

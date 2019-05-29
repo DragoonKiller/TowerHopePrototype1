@@ -18,7 +18,6 @@ public class SkillFlash : Skill
     void Start()
     {
         destination = FindDestination();
-        Util.EditorDrawCircle(destination, config.swapDist, 32, Color.red, 3f);
         
         physTimer = 0f;
         transfered = false;
@@ -102,7 +101,13 @@ public class SkillFlash : Skill
     ///   since this is performed without "time proceeded".
     bool Transfer()
     {
-        var p = Physics2D.CircleCastAll(destination, config.swapDist, Vector2.zero, 0, LayerMask.GetMask("MonsterBullet"));
+        Util.EditorDrawCircle(destination, config.swapDist, 32, Color.red, 3f);
+        
+        var originSetting = Physics2D.queriesStartInColliders;
+        Physics2D.queriesStartInColliders = true;
+        var p = Physics2D.CircleCastAll(destination, config.swapDist, Vector2.up, Util.eps, LayerMask.GetMask("MonsterBullet"));
+        Physics2D.queriesStartInColliders = originSetting;
+        
         bool swapped = false;
         foreach(var h in p)
         {
@@ -124,16 +129,20 @@ public class SkillFlash : Skill
         
         // Using step cast method,
         //   because Physics2D.RaycastAll will *not* return multiple contacts for one collider.
-        Debug.DrawRay(cur, move, Color.green, 5f);
+        Debug.DrawRay(cur, move * 1e3f, Color.green, 5f);
         
         Vector2 curPos = cur;
         Vector2 restMove = move;
         bool insideGround = false;
         Vector2 prevOffGround = cur;    // Assume curent position is not in the ground.
-        while(true)
+        for(int i=0; i<20; i++)
         {
             var hit = Physics2D.Raycast(curPos, restMove, restMove.magnitude, LayerMask.GetMask("Terrain"));
             
+            var hits = Physics2D.RaycastAll(curPos, restMove, restMove.magnitude, LayerMask.GetMask("Terrain"));
+            foreach(var r in hits) Debug.DrawRay(r.point, r.normal, Color.white, 3f);
+            
+            // Did not hit anything...
             if(hit.collider == null)
             {
                 Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.red, 3f);
@@ -142,6 +151,7 @@ public class SkillFlash : Skill
                 break;
             }
             
+            // Hit an surface that is parallel to the direction...
             if(hit.normal.Dot(move.normalized).EZ())
             {
                 Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.yellow, 3f);
@@ -150,11 +160,14 @@ public class SkillFlash : Skill
                 continue;
             }
             
+            // Hit something...
             Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.green, 3f);
             curPos = hit.point + move.normalized * config.collisionPreventingDist;
             restMove = cur + move - curPos;
             if(!insideGround) prevOffGround = hit.point - move.normalized * config.collisionPreventingDist;
             insideGround = !insideGround;
+            
+            Debug.DrawRay(hit.point, hit.normal, Color.cyan, 3f);
         }
         
         return res;

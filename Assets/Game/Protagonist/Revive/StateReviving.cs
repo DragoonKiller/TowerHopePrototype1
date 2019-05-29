@@ -18,7 +18,7 @@ public class StateReviving : MonoBehaviour
         particleGen.GenParticles();
         
         // Disable player control.
-        protagonist.requireControl.Register(this);
+        protagonist.requireControl.Add(this);
         
         // Hide player sprite.
         protagonist.sprite.enabled = false;

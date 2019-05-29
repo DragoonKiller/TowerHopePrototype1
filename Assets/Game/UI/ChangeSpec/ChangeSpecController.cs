@@ -37,6 +37,11 @@ public class ChangeSpecController : MonoBehaviour
     public TextMesh textStoneMagicMax;
     public TextMesh textStoneMagicRec;
     
+    public TextMesh spiritCount;
+    public TextMesh powerCount;
+    public TextMesh natureCount;
+    public TextMesh indicatorCount;
+    
     public TextMesh[] magicChangeLabels;
     public string numberFormat;
     
@@ -61,12 +66,16 @@ public class ChangeSpecController : MonoBehaviour
     
     public Vector2 stoneSideScale;
     public Vector2 stoneCenterScale;
+    
+    [Header("Visualize & UI")]
+    public float scaleSize;
+    public float curScale => Camera.main.orthographicSize * scaleSize;
+    
     [Header("Selection info")]
     // Which stone type is player's cursor hovering?
     public StoneType curSelectingType;
     // Which type of stones are certainly selected to be shown?
     public StoneType curSelectionType;
-    
     
     public StoneSlot curSelectSlot;
     
@@ -98,7 +107,10 @@ public class ChangeSpecController : MonoBehaviour
         UpdateTypeSelectors();
         UpdateSelectionArrow();
         UpdateStoneSelection();
+        UpdateScale();
         UpdateText();
+        
+        if(!active) return;
         
         // Actions.
         SelectType();
@@ -125,7 +137,7 @@ public class ChangeSpecController : MonoBehaviour
         curSelectSlot = null;
         foreach(var st in inventory.curWand.stoneSlots)
         {
-            var dist = ((Vector2)st.transform.position).To(Util.cursorWorldPosition).magnitude;
+            var dist = ((Vector2)st.transform.position).To(Util.cursorWorldPosition).magnitude / curScale;
             if(dist <= actionRadius)
             {
                 curSelectSlot = st;
@@ -139,7 +151,7 @@ public class ChangeSpecController : MonoBehaviour
         curSelectingType = StoneType.None;
         foreach(var s in selectors)
         {
-            var dist = ((Vector2)s.renderer.transform.position).To(Util.cursorWorldPosition).magnitude;
+            var dist = ((Vector2)s.renderer.transform.position).To(Util.cursorWorldPosition).magnitude / curScale;
             if(dist <= typeSelectRadius)
             {
                 curSelectingType = s.type;
@@ -170,7 +182,7 @@ public class ChangeSpecController : MonoBehaviour
     void UpdateWandPosition()
     {
         // Synchronize position no matter if activated.
-        inventory.curWand.transform.position = (Vector2)cam.transform.position + wandOffset;
+        inventory.curWand.transform.position = (Vector2)cam.transform.position + wandOffset * curScale;
         
         if(active) inventory.curWand.transform.position = inventory.curWand.transform.position.Z(displayDepth);
         else inventory.curWand.transform.position = inventory.curWand.transform.position.Z(hideDepth);
@@ -227,7 +239,7 @@ public class ChangeSpecController : MonoBehaviour
     {
         bool SetArrowColor(SpriteRenderer rd, Rect area, Vector2 pos, Vector2 scale, Color active, Color deactive)
         {
-            if(area.Contains((Util.cursorWorldPosition - pos) / scale))
+            if(area.Contains((Util.cursorWorldPosition - pos) / scale / curScale))
             {
                 rd.color = arrowActiveColor;
                 return true;
@@ -266,6 +278,12 @@ public class ChangeSpecController : MonoBehaviour
         SetStone(rightStone, r, stoneSideScale);
     }
     
+    void UpdateScale()
+    {
+        inventory.curWand.transform.localScale = curScale * Vector2.one;
+        this.transform.localScale = curScale * Vector3.one;
+    }
+    
     void UpdateText()
     {
         if(curSelectSlot != null && curSelectSlot.stone != null)
@@ -286,6 +304,12 @@ public class ChangeSpecController : MonoBehaviour
             textStoneMagicRec.text = selectedStone.magicRecoverRate.ToString(numberFormat);
             foreach(var t in magicChangeLabels) t.color = t.color.A(1f);
         }
+        
+        var cnt = inventory.CountAllStone();
+        spiritCount.text = cnt[StoneType.Spirit].ToString();
+        powerCount.text = cnt[StoneType.Power].ToString();
+        natureCount.text = cnt[StoneType.Nature].ToString();
+        indicatorCount.text = cnt[StoneType.Indicator].ToString();
     }
     
     void SelectType()

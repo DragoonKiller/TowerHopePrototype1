@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - Terrain
-  - 
+  - Disaster
   - Monster
   - 
   - MonsterBullet
@@ -22,10 +22,10 @@ TagManager:
   - 
   - 
   - 
+  - Item
   - 
   - 
-  - 
-  - 
+  - Dialog
   - 
   - 
   - 
@@ -34,7 +34,7 @@ TagManager:
   - 
   - 
   - 
-  - Player
+  - Protagonist
   - 
   - EditorOnly
   m_SortingLayers:

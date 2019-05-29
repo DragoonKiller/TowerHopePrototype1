@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         ChangeSpec();
         
         // The controller will do nothing if the protagonist does not allow the control...
-        if(protagonist.requireControl.registered)
+        if(!protagonist.requireControl.empty)
         {
             Stop();
             return;
@@ -31,6 +31,14 @@ public class PlayerController : MonoBehaviour
         Move();
         SelectSkill();
         UseSkill();
+    }
+    
+    void OnDestroy()
+    {
+        if(protagonist.requireControl.Registered(this))
+        {
+            protagonist.requireControl.Remove(this);
+        }
     }
     
     void ChangeSpec()
@@ -45,10 +53,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
         
-        if(!protagonist.requireControl.registered)
+        if(!protagonist.requireControl.Registered(this))
         {
             if(!ableToChangeSpec) return;
-            protagonist.requireControl.Register(this);
+            protagonist.requireControl.Add(this);
             changeSpecController.active = true;
             changingSpec = true;
             return;
@@ -96,7 +104,8 @@ public class PlayerController : MonoBehaviour
         
         if(wand.skillPrepared)
         {
-            Skill skill = protagonist.gameObject.AddComponent(skillTable[wand.curSkillSpec].skillType) as Skill;
+            if(wand.curSkillConfig.isNone) return;
+            Skill skill = protagonist.gameObject.AddComponent(wand.curSkillConfig.skillType) as Skill;
             protagonist.curSkillState = skill;
             skill.config = skillTable[wand.curSkillSpec];
         }

@@ -17,6 +17,7 @@ MonoBehaviour:
   barnacleBulletTemplate: {fileID: 3946913860371681324, guid: f4e834de12dd84b449c4814b8fa0bd06,
     type: 3}
   bulletLifeTime: 20
-  targetSpeed: 2
+  targetSpeed: 1.8
   accRatePerPhysFrame: 0.5
-  cooldown: 3
+  cooldown: 1.5
+  reactDist: 50

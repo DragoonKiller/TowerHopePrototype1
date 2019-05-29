@@ -30,7 +30,7 @@ MonoBehaviour:
   stopTime: 0.25
   magicConsumePerUse: 120
   stickTimeLimit: 0.1
-  stickMagicConsumePerSec: 4
+  stickMagicConsumePerSec: 0
   stickEffectTemplate: {fileID: 2259550798466919961, guid: d0bd64993f47b1243921f5276e73bfc3,
     type: 3}
   activeColor: {r: 1, g: 0.9502027, b: 0.10849059, a: 1}

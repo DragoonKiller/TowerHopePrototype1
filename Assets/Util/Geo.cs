@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 
 using static Util;
 
+
+[Serializable]
 public struct Line : IEquatable<Line>
 {
     public Vector2 from;
@@ -31,7 +33,10 @@ public struct Line : IEquatable<Line>
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Cover(Vector2 v) => (dir.Dot(from.To(v)) / dir.magnitude).LEZ();
+    public float Dist(Vector2 v) => (dir.Cross(from.To(v)) / dir.magnitude).Abs();
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Cover(Vector2 v) => Dist(v).LEZ();
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector2 ProjectionOf(Vector2 p)
@@ -50,7 +55,7 @@ public struct Line : IEquatable<Line>
     public Vector2 Intersection(Line b)
     {
         float ax = from.To(b.from).Cross(b.dir) / dir.Cross(b.dir);
-        return from + ax * to;
+        return from + ax * dir;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -76,6 +81,7 @@ public struct Line : IEquatable<Line>
     public override bool Equals(object o) => throw new InvalidOperationException();
 }
 
+[Serializable]
 public struct Segment : IEquatable<Segment>
 {
     public Vector2 from;
@@ -104,10 +110,19 @@ public struct Segment : IEquatable<Segment>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Cover(Vector2 v, bool strict = false)
     {
-        float df = dir.Dot(dir.To(v)) / dir.magnitude;
-        float dt = (-dir).Dot(dir.To(v)) / dir.magnitude;
-        if(strict) return df.GZ() && dt.GZ();
-        return df.GEZ() && dt.GEZ();
+        var hf = from.To(v).Dot(dir.normalized);
+        var ht = to.To(v).Dot(-dir.normalized);
+        if(hf.GZ() && ht.GZ()) return asLine.Dist(v).LEZ();
+        return strict ? false : from.To(v).magnitude.Min(to.To(v).magnitude).LEZ();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Dist(Vector2 v)
+    {
+        var hf = from.To(v).Dot(dir.normalized);
+        var ht = to.To(v).Dot(-dir.normalized);
+        if(hf.GZ() && ht.GZ()) return asLine.Dist(v);
+        return from.To(v).magnitude.Min(to.To(v).magnitude);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -118,20 +133,28 @@ public struct Segment : IEquatable<Segment>
         if(g.To(from).magnitude < g.To(to).magnitude) return from;
         return to;
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Intersects(Segment B, bool strict = false)
+    public bool HasCommonEndpoint(Segment b)
+        => from.CloseTo(b.from)
+        || from.CloseTo(b.to)
+        || b.from.CloseTo(from)
+        || b.from.CloseTo(to);
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Intersects(Segment s, bool strict = false)
     {
-        float a = dir.Cross(from.To(B.from));
-        float b = dir.Cross(from.To(B.to));
-        float c = B.dir.Cross(B.from.To(from));
-        float d = B.dir.Cross(B.from.To(to));
+        float a = dir.Cross(from.To(s.from));
+        float b = dir.Cross(from.To(s.to));
+        float c = s.dir.Cross(s.from.To(from));
+        float d = s.dir.Cross(s.from.To(to));
         if(strict)
             return ((a.LZ() && b.GZ()) || (a.GZ() && b.LZ())) &&
                    ((c.LZ() && d.GZ()) || (c.GZ() && d.LZ()));
         else
-            return ((a.LZ() && b.GZ()) || (a.GZ() && b.LZ()) || Cover(B.from, false) || Cover(B.to, false)) &&
-                   ((c.LZ() && d.GZ()) || (c.GZ() && d.LZ()) || B.Cover(from, false) || B.Cover(to, false));
+            return ((a.LZ() && b.GZ()) || (a.GZ() && b.LZ()) || Cover(s.from, false) || Cover(s.to, false)) &&
+                   ((c.LZ() && d.GZ()) || (c.GZ() && d.LZ()) || s.Cover(from, false) || s.Cover(to, false));
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -157,6 +180,7 @@ public struct Segment : IEquatable<Segment>
     
     public override bool Equals(object o) => throw new InvalidOperationException();
     
+    public override string ToString() => "Segment[" + from + "," + to + "]";
 }
 
 public struct Triangle
@@ -181,6 +205,20 @@ public struct Triangle
         this.a = a;
         this.b = b;
         this.c = c;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Contains(Vector2 x, bool strict = false)
+    {
+        int ad = a.To(b).Cross(a.To(x)).Sgn();
+        int bd = b.To(c).Cross(b.To(x)).Sgn();
+        int cd = c.To(a).Cross(c.To(x)).Sgn();
+        if(strict) return ad == bd && bd == cd;
+        return (ad == bd && bd == cd)
+            || (ad == 0 && bd == cd)
+            || (bd == 0 && cd == ad)
+            || (cd == 0 && ad == bd)
+            || (ad.Abs() + bd.Abs() + cd.Abs() == 1); // one 1 or -1; two 0.
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -287,59 +325,6 @@ public struct CircleInterval
 
 public static partial class Util
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Dot(this Vector2 a, Vector2 b) => a.x * b.x + a.y * b.y;
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Cross(this Vector2 a, Vector2 b) => a.x * b.y - a.y * b.x;
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 X(this Vector2 a, float x) => new Vector2(x, a.y);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Y(this Vector2 a, float y) => new Vector2(a.x, y);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 X(this Vector3 a, float x) => new Vector3(x, a.y, a.z);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 Y(this Vector3 a, float y) => new Vector3(a.x, y, a.z);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 Z(this Vector3 a, float z) => new Vector3(a.x, a.y, z);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Len(this Vector2 a, float z) => a.normalized * z;
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Angle(this Vector2 a, float v) => a.normalized.Rot(v);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 To(this Vector2 a, Vector2 b) => b - a;
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 To(this Vector3 a, Vector3 b) => b - a;
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Dir(this (Vector2 from, Vector2 to) a) => a.from.To(a.to);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Angle(this Vector2 a) => Mathf.Atan2(a.y, a.x);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Rot(this Vector2 a, float t)
-        => new Vector2(a.x * t.Cos() - a.y * t.Sin(), a.x * t.Sin() + a.y * t.Cos());
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 RotHalfPi(this Vector2 a) => new Vector2(- a.y, a.x);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Reflect(this Vector2 dir, Vector2 dst)
-    {
-        var delta = dst.Cross(dir.normalized);
-        return dst + dir.normalized.RotHalfPi() * delta * 2.0f;
-    }
-    
     // ========================================================================
     // Polygonal lines
     // ========================================================================

@@ -41,4 +41,18 @@ public class Inventory : MonoBehaviour
     
     public List<Stone> UnusedStoneOfType(StoneType type) => unusedStones.Filter((x) => x.type == type);
     
+    public int CountStone(StoneType type, bool includingUsed = false)
+    {
+        if(includingUsed) return stones.Cnt((x) => x.type == type);
+        return unusedStones.Cnt((x) => x.type == type);
+    }
+    
+    public Dictionary<StoneType, int> CountAllStone(bool includingUsed = false)
+    {
+        var res = new Dictionary<StoneType, int>();
+        var st = includingUsed ? stones : unusedStones;
+        foreach(var tp in Enum.GetValues(typeof(StoneType))) res.Add((StoneType)tp, 0);
+        foreach(var s in st) res[s.type] += 1;
+        return res;
+    }
 }

@@ -20,17 +20,17 @@ MonoBehaviour:
     d: 2
     e: 0
   sprite: {fileID: 21300000, guid: d8b8db02f19b60c43b6defecd63880ab, type: 3}
-  range: 6
+  range: 9
   magicRequired: 100
   rangePerIndicatorStone: 0.25
   efficiencyPerNatureStone: 0.25
   hideTime: 0.33333334
   appearTime: 0.1
-  maxDist: 6
+  maxDist: 9
   swapDist: 2
   collisionPreventingDist: 0.1
-  magicConsumePerUse: 100
-  magicConsumePerSwap: 20
+  magicConsumePerUse: 120
+  magicConsumePerSwap: 0
   destinationAbsorb: {fileID: 7428418889734491041, guid: 55d51726357e49a4dae9b44f98ad5bcb,
     type: 3}
-  renderScales: 10
+  renderScales: 20

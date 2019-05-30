@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -121,55 +121,146 @@ public class SkillFlash : Skill
     
     Vector2 FindDestination()
     {
-        Vector2 res = Vector2.zero;
         var target = Util.cursorWorldPosition;
         var cur = (Vector2)protagonist.transform.position;
         var move = target - cur;
         move = move.Len((config.maxDist * (1.0f + config.rangePerIndicatorStone * config.rangePerIndicatorStone)).Min(move.magnitude));
         
-        // Using step cast method,
-        //   because Physics2D.RaycastAll will *not* return multiple contacts for one collider.
-        Debug.DrawRay(cur, move * 1e3f, Color.green, 5f);
+        // The move target is the place where protagonist is.
+        // No need to compute more information.
+        if(move.magnitude.LEZ()) return cur;
         
-        Vector2 curPos = cur;
-        Vector2 restMove = move;
-        bool insideGround = false;
-        Vector2 prevOffGround = cur;    // Assume curent position is not in the ground.
-        for(int i=0; i<20; i++)
+        // Test all possible colliders.
+        var hitCols = Physics2D.RaycastAll(cur, move, move.magnitude, LayerMask.GetMask("Terrain"));
+        Debug.DrawRay(cur, move, Color.cyan, 3f);
+        
+        // Get all actual collision points' distances in and out.
+        // inout == 1 : go into the polygon.
+        // inout == -1 : go out of the polygon.
+        // inout == other numbers : undefined.
+        var hits = new List<(float dist, Inout inout)>();
+        
+        // For logical consistance, add the beginning point.
+        hits.Add((0, Inout.Out));
+        
+        foreach(var col in hitCols)
         {
-            var hit = Physics2D.Raycast(curPos, restMove, restMove.magnitude, LayerMask.GetMask("Terrain"));
-            
-            var hits = Physics2D.RaycastAll(curPos, restMove, restMove.magnitude, LayerMask.GetMask("Terrain"));
-            foreach(var r in hits) Debug.DrawRay(r.point, r.normal, Color.white, 3f);
-            
-            // Did not hit anything...
-            if(hit.collider == null)
+            var c = col.collider;
+            switch(c)
             {
-                Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.red, 3f);
-                if(insideGround) res = prevOffGround - move.normalized * config.collisionPreventingDist;
-                else res = cur + move;
+                case PolygonCollider2D s:
+                {
+                    int cnt = 0;
+                    for(int u=0; u<s.pathCount; u++)
+                    {
+                        var path = s.GetPath(u);
+                        for(int i=0; i<path.Length; i++)
+                        {
+                            var polySeg = new Segment(
+                                (Vector2)c.transform.position + path[i],
+                                (Vector2)c.transform.position + path[(i + 1).ModSys(path.Length)]
+                            );
+                            var testSeg = new Segment(cur, cur + move);
+                            
+                            Debug.DrawLine(polySeg.from, polySeg.to, Color.blue, 3f);
+                            
+                            // Segments are parallel. Always ingore them in this case, even if they intersect.
+                            if(!polySeg.asLine.Intersects(testSeg.asLine)) continue;
+                            
+                            var itsc = polySeg.asLine.Intersection(testSeg.asLine);
+                            
+                            // Get line intersection but not ray intersection.
+                            if(cur.To(itsc).Dot(move.normalized).LEZ()) continue;
+                            
+                            // The intersection is too far to the original.
+                            if(cur.To(itsc).magnitude.G(move.magnitude)) continue;
+                            
+                            // The test line covers one of the polygon's vertex. Ignore it.
+                            if(!polySeg.Cover(itsc, true)) continue;
+                            
+                            // Note we don't have to check the intersection of testSeg. it is infinity long.
+                            // if(!testSeg.Cover(itsc, true)) continue;
+                            
+                            cnt += 1;
+                            hits.Add((cur.To(itsc).magnitude, 0));
+                            Util.EditorDrawRect(itsc, Vector2.one * 0.3f, Color.green, 3.0f);
+                        }
+                        
+                        // In this range, all are intersection to one path.
+                        // A polygon path is closed, and the intersections are always in
+                        //   "in - out - in - out ..." pattern when sorted by distance,
+                        //   as long as the original point (protagonist's location) is off the polygon. 
+                        hits.Sort(hits.Count - cnt, cnt, Comparer<(float, Inout)>.Default);
+                        
+                        Inout curInout = Inout.Out;
+                        for(int i = hits.Count - cnt; i < hits.Count; i++)
+                        {
+                            hits[i] = (hits[i].dist, curInout = (Inout)(-(int)curInout));
+                        }
+                    }
+                }
                 break;
+                default: throw new System.Exception("Not-supported collider.");
             }
-            
-            // Hit an surface that is parallel to the direction...
-            if(hit.normal.Dot(move.normalized).EZ())
+        }
+        
+        // Get all in-out information.
+        hits.Sort(Comparer<(float, Inout)>.Default); // simply sort asending.
+        
+        // There's no hits. Free to move directly...
+        if(hits.Count <= 1) return cur + move;
+        
+        Vector2 res = Vector2.zero;
+        int inCount = 0;
+        for(int i=1; i<hits.Count; i++)
+        {
+            var pd = hits[i-1].dist;
+            var cd = hits[i].dist;
+            if(inCount == 0) // We're off any polygon now.
             {
-                Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.yellow, 3f);
-                curPos += move.normalized * config.collisionPreventingDist;
-                restMove -= move.normalized * config.collisionPreventingDist;
-                continue;
+                Segment cs = new Segment(cur + move.normalized * pd, cur + move.normalized * cd);
+                Debug.DrawLine(cs.from, cs.to, Color.green, 3f);
+                
+                // The target must be in the valid segment first...
+                // Cancel the check since move.magnitude < pd won't be true anymore...
+                if(move.magnitude.L(pd)) continue;
+                
+                // And the target location can be... here.
+                var safeDist = move.magnitude.Clamp(pd + config.collisionPreventingDist, cd - config.collisionPreventingDist);
+                res = cur + safeDist * move.normalized;
+            }
+            else // We're in some polygon.
+            {
+                Segment cs = new Segment(cur + move.normalized * pd, cur + move.normalized * cd);
+                Debug.DrawLine(cs.from, cs.to, Color.red, 3f);
             }
             
-            // Hit something...
-            Util.EditorDrawRect(curPos, Vector2.one * 0.1f, Color.green, 3f);
-            curPos = hit.point + move.normalized * config.collisionPreventingDist;
-            restMove = cur + move - curPos;
-            if(!insideGround) prevOffGround = hit.point - move.normalized * config.collisionPreventingDist;
-            insideGround = !insideGround;
-            
-            Debug.DrawRay(hit.point, hit.normal, Color.cyan, 3f);
+            switch(hits[i].inout)
+            {
+                case Inout.In : inCount++; break;
+                case Inout.Out : inCount--; break;
+                default: throw new System.Exception("Invalid inout parameter.");
+            }
+        }
+        
+        // A special case when specified destination is off all polygons.
+        if(inCount == 0)
+        {
+            var finalDist = hits[hits.Count - 1].dist;
+            var resDist = move.magnitude.Max(finalDist + config.collisionPreventingDist);
+            return cur + move.Len(resDist);
         }
         
         return res;
+    }
+    
+    // ============================================================================================
+    // Util
+    // ============================================================================================
+    enum Inout : int
+    {
+        Out = -1,
+        Unknown = 0,
+        In = 1,
     }
 }

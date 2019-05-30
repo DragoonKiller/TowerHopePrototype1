@@ -326,6 +326,12 @@ public struct CircleInterval
 public static partial class Util
 {
     // ========================================================================
+    // Rays
+    // ========================================================================
+    public static Segment ToSegment(this Ray x) => new Segment(x.origin, x.direction);
+    public static Line ToLine(this Ray x) => new Line(x.origin, x.direction);
+    
+    // ========================================================================
     // Polygonal lines
     // ========================================================================
     

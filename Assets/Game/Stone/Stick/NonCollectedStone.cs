@@ -37,6 +37,9 @@ public class NonCollectedStone : MonoBehaviour
         s.magicRecoverRate = recMagic;
         s.type = type;
         
+        // Move revive position.
+        ReviveBeacon.inst.transform.position = this.transform.position;
+        
         shouldDestroy = true;
     }
 }

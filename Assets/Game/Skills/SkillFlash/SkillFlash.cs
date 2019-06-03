@@ -71,13 +71,18 @@ public class SkillFlash : Skill
         {
             if(!transfered)
             {
+                transfered = true;
+                
                 bool swapped = Transfer();
                 float magicCost = 0f.Max(1.0f - config.efficiencyPerNatureStone * spec.Count(StoneType.Nature));
                 if(swapped) protagonist.inventory.curWand.curSlot.ConsumeMagic(config.magicConsumePerSwap * magicCost);
                 else protagonist.inventory.curWand.curSlot.ConsumeMagic(config.magicConsumePerUse * magicCost);
                  
+                // Move the protagonist.
                 this.transform.position = destination;
-                transfered = true;
+                
+                // Clear protagonist's trails.
+                foreach(var trail in protagonist.trails) trail.Clear();
             }
             
             var curTime = physTimer - config.hideTime;

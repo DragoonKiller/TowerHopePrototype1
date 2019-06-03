@@ -5,7 +5,7 @@ public class RemoveDialogTrigger : MonoBehaviour
 {
     public DialogTrigger removeTarget;
     
-    bool shouldDestroy;
+    bool shouldDestroy = false;
     
     void Update()
     {

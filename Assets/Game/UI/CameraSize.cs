@@ -45,7 +45,7 @@ public class CameraSize : MonoBehaviour
             Debug.DrawRay(
                 protagonist.transform.position,
                 hit.collider == null ? dir * maxSize : hit.point - (Vector2)protagonist.transform.position,
-                Color.white
+                Color.white.A(0.4f)
             );
             
             if(hit.collider != null) hitDist = hit.distance;

@@ -28,5 +28,5 @@ MonoBehaviour:
     type: 3}
   speed: 0.4
   accPerPhysicsFrame: 0.3
-  magicConsumePerSec: 32
+  magicConsumePerSec: 40
   collisionSpeed: 8

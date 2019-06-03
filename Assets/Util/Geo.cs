@@ -89,6 +89,7 @@ public struct Segment : IEquatable<Segment>
     public Vector2 dir => to - from;
     public Line asLine => new Line(from, to);
     public Vector2 center => (from + to) * 0.5f;
+    public Rect AARect => new Rect(center, dir);
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Segment(Vector2 from, Vector2 to)
@@ -145,6 +146,9 @@ public struct Segment : IEquatable<Segment>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Intersects(Segment s, bool strict = false)
     {
+        // Fast elimination.
+        if(!AARect.Overlaps(s.AARect)) return false;
+        
         float a = dir.Cross(from.To(s.from));
         float b = dir.Cross(from.To(s.to));
         float c = s.dir.Cross(s.from.To(from));

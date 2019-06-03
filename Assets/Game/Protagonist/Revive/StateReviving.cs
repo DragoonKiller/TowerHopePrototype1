@@ -13,6 +13,8 @@ public class StateReviving : MonoBehaviour
     
     void Start()
     {
+        foreach(var tr in protagonist.trails) tr.enabled = false;
+        
         // Begin reviving instantly.
         var particleGen = this.GetComponentInChildren<DeathParticleGen>();
         particleGen.GenParticles();
@@ -43,7 +45,13 @@ public class StateReviving : MonoBehaviour
         protagonist.sprite.enabled = true;
         
         // Place player to the correct location.
-        this.transform.position = reviveBeacon.transform.position;
+        if(this.gameObject != null) this.transform.position = reviveBeacon.transform.position;
+        
+        foreach(var tr in protagonist.trails)
+        {
+            tr.enabled = true;
+            tr.Clear();
+        }
         
         // Stop the player.
         protagonist.rd.velocity = Vector2.zero;

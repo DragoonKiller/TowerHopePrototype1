@@ -7,8 +7,9 @@ using UnityEngine.UI;
 [Serializable]
 public class DialogData
 {
-    public string text;
-    public float duration;
+    public string text = "";
+    public float duration = 0f;
+    public Color color = Color.white;
 }
 
 [RequireComponent(typeof(Text))]
@@ -39,6 +40,7 @@ public class Dialog : MonoBehaviour
             var cur = data.Peek();
             cur.duration -= Time.deltaTime;
             text.text = cur.text;
+            text.color = cur.color;
         }
     }
      

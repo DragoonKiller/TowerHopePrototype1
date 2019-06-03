@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94199402630707a49b68c90448868661, type: 3}
+  m_Name: MonsterVulkflyConfig
+  m_EditorClassIdentifier: 
+  bulletTemplate: {fileID: 1620553324501411680, guid: 18f446881d719194ebda2ee8087c1c83,
+    type: 3}
+  bulletExplodeTemplate: {fileID: 7713763992936573865, guid: 65fc6a4f0d388c442a3f8140465d6bd9,
+    type: 3}
+  strikePosibility: 0.4
+  minSkillChangeTime: 1.25
+  maxSkillChangeTime: 1.45
+  alertDistance: 18
+  chasingTimeLimit: 12
+  speed: 2
+  angularSpeed: 180
+  idleColor: {r: 0.61917627, g: 0.41985583, b: 0.8018868, a: 1}
+  ordinaryColor: {r: 0.43894622, g: 0.22107512, b: 0.6792453, a: 1}
+  strikeRange: 10
+  strikeSpeed: 50
+  strikeChantSec: 1.2
+  strikeColor: {r: 0.38812745, g: 0.42191452, b: 0.9245283, a: 1}
+  shotRange: 15
+  bulletSpeed: 8
+  bulletLifeTime: 4
+  bulletAngularSpeed: 45
+  shotChantSec: 2
+  shotRecoverSec: 1
+  shotCount: 8
+  shotDelay: 0.1
+  bulletAngleRange: 60
+  shotColor: {r: 0.27450982, g: 0.4862745, b: 0.6509804, a: 1}

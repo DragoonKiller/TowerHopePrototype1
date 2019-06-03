@@ -21,7 +21,7 @@ public class Protagonist : MonoBehaviour
     public Rigidbody2D rd => this.GetComponent<Rigidbody2D>();
     public PolygonCollider2D col => this.GetComponentInChildren<PolygonCollider2D>();
     public SpriteRenderer sprite;
-    public TrailRenderer trail => this.GetComponentInChildren<TrailRenderer>();
+    public TrailRenderer[] trails => this.GetComponentsInChildren<TrailRenderer>();
     
     void Start()
     {
@@ -29,10 +29,15 @@ public class Protagonist : MonoBehaviour
     }
     
     
-    void OnCollisionEnter2D(Collision2D c)
+    void OnCollisionEnter2D(Collision2D c) => OnCollisionStay2D(c);
+    
+    void OnCollisionStay2D(Collision2D c)
     {
         // Only Monsters, MonsterBullets, Disasters can hurt protagonist.
         if(((1 << c.collider.gameObject.layer) & LayerMask.GetMask("Monster", "MonsterBullet", "Disaster")) == 0) return;
+        
+        // Protagonist is reviving now...
+        if(this.gameObject.GetComponent<StateReviving>() != null) return;
         
         DestroyPlayer();
     }

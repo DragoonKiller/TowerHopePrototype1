@@ -24,8 +24,7 @@ public class DefenceBubble : MonoBehaviour
     
     void OnCollisionEnter2D(Collision2D c)
     {
-        var bullet = c.collider.GetComponent<MonsterBullet>();
-        if(bullet == null) return;
+        if(((1 << c.collider.gameObject.layer) & LayerMask.GetMask("MonsterBullet")) == 0) return;
         
         Vector2 avgContact = Vector2.zero;
         for(int i=0; i<c.contactCount; i++) avgContact += c.GetContact(i).point;

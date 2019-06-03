@@ -3,26 +3,24 @@ using UnityEngine;
 
 public class DisasterLavaflow : Disaster
 {
-    public float[] heights;
-    public float floodPerSec;
-    int curHeight;
-    public float restHeight;
+    public float stopHeight;
+    public float speed;
     
-    // Foreach triggering, simply move the altitude up. 
     public override void Trigger()
     {
-        // Do nothing if reach the top...
-        if(curHeight == heights.Length) return;
-        
-        restHeight += heights[curHeight];
-        curHeight += 1;
+        // Do nothing...
     }
     
-    public void Update()
+    void FixedUpdate()
     {
-        var delta = restHeight - 0f.Max(restHeight - floodPerSec * Time.deltaTime);
-        this.transform.position += delta * Vector3.up;
-        restHeight -= delta;
+        
+        if(this.transform.position.y >= stopHeight)
+        {
+            this.transform.position = this.transform.position.Y(stopHeight);
+            return;
+        }
+        
+        this.transform.Translate(speed * Time.fixedDeltaTime * Vector3.up);
     }
     
 }

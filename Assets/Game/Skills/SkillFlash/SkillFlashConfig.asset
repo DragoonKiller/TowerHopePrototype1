@@ -29,8 +29,8 @@ MonoBehaviour:
   maxDist: 9
   swapDist: 2
   collisionPreventingDist: 0.1
-  magicConsumePerUse: 120
-  magicConsumePerSwap: 0
+  magicConsumePerUse: 140
+  magicConsumePerSwap: 20
   destinationAbsorb: {fileID: 7428418889734491041, guid: 55d51726357e49a4dae9b44f98ad5bcb,
     type: 3}
   renderScales: 20

@@ -73,12 +73,12 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - angleRange: 0.5235988
-    - fadeRate: 0.24875624
-    - partCount: 53
+    - fadeRate: 0.26881722
+    - partCount: 49
     - radius: 0.33333334
     - visualRate: 0.3
-    - width: 0.009950249
+    - width: 0.010752689
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - currentDir: {r: 0.9627138, g: -0.27052188, b: 0, a: 0}
+    - currentDir: {r: 0.9335519, g: 0.35844225, b: 0, a: 0}

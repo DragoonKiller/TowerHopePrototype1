@@ -8,7 +8,14 @@ public class MagicRecoverManager : MonoBehaviour
     public Inventory inventory;
     public ContactDetector detector;
     
-    public float recoverRateChangePerSec;
+    public bool allowRecover;
+    
+    public float staticRecoverMultiply;
+    
+    public float recoverRateIncreasePerSec;
+    public float recoverRateDecreasePerSec;
+    
+    [Tooltip("After leaving the ground,\nyou still have this duration of time to recover at normal speed.")]
     public float recoverReduceDelay;
     
     [Header("Information")]
@@ -17,9 +24,11 @@ public class MagicRecoverManager : MonoBehaviour
     
     void FixedUpdate()
     {
+        if(!allowRecover) return;
+        
         if(detector.recentContacts.Count != 0)
         {
-            recoverRate = 1f.Min(recoverRate + Time.fixedDeltaTime * recoverRateChangePerSec);
+            recoverRate = 1f.Min(recoverRate + Time.fixedDeltaTime * recoverRateIncreasePerSec);
             reduceDelay = recoverReduceDelay;
         }
         else
@@ -29,14 +38,14 @@ public class MagicRecoverManager : MonoBehaviour
         
         if(reduceDelay == 0f)
         {
-            recoverRate = 0f.Max(recoverRate - Time.fixedDeltaTime * recoverRateChangePerSec);
+            recoverRate = 0f.Max(recoverRate - Time.fixedDeltaTime * recoverRateDecreasePerSec);
         }
         
         foreach(var ss in inventory.curWand.stoneSlots)
         {
             var s = ss.stone;
             if(s == null) continue;
-            ss.magic += Time.fixedDeltaTime * s.magicRecoverRate * recoverRate;
+            ss.magic += staticRecoverMultiply * Time.fixedDeltaTime * s.magicRecoverRate * recoverRate;
         }
     }
     
